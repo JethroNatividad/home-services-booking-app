@@ -40,6 +40,23 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit');
     }
 
+    public function setup(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'contact_number' => ['required', 'string', 'max:255'],
+            'address' => ['required', 'string', 'max:255'],
+            'lat' => ['required', 'string'],
+            'lng' => ['required', 'string'],
+        ]);
+
+        $request->user()->completed = true;
+
+        $request->user()->save();
+
+        return Redirect::route('dashboard');
+    }
+
+
     /**
      * Delete the user's account.
      */

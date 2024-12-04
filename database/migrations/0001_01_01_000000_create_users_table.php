@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('contact_number')->nullable();
             $table->string('address')->nullable();
             $table->string('lat')->nullable();
-            $table->string('long')->nullable();
+            $table->string('lng')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

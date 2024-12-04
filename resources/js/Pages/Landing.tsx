@@ -27,7 +27,9 @@ const Landing = () => {
                             <DropdownMenuContent>
                                 <DropdownMenuItem className="group">
                                     <Link
-                                        href="/app/signup?role=SERVICE_PROVIDER"
+                                        href={route("register", {
+                                            role: "service_provider",
+                                        })}
                                         className="flex items-center"
                                     >
                                         Service Provider
@@ -36,7 +38,9 @@ const Landing = () => {
                                 </DropdownMenuItem>
                                 <DropdownMenuItem className="group">
                                     <Link
-                                        href="/app/signup?role=CUSTOMER"
+                                        href={route("register", {
+                                            role: "customer",
+                                        })}
                                         className="flex items-center"
                                     >
                                         Customer

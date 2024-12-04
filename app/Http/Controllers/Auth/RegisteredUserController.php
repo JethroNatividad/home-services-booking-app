@@ -18,9 +18,12 @@ class RegisteredUserController extends Controller
     /**
      * Display the registration view.
      */
-    public function create(): Response
+    public function create(Request $request): Response
     {
-        return Inertia::render('Auth/Register');
+        $role = $request->query('role', 'customer');
+        return Inertia::render('Auth/Register', [
+            'role' => $role
+        ]);
     }
 
     /**
@@ -31,13 +34,20 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'first_name' => 'required|string|max:255',
+            'middle_name' => 'string|max:255',
+            'last_name' => 'required|string|max:255',
+            'role' => 'required|in:customer,service_provider',
+            'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
+            'password' => ['required', Rules\Password::defaults()],
+            'confirm_password' => 'required|same:password',
         ]);
 
         $user = User::create([
-            'name' => $request->name,
+            'first_name' => $request->first_name,
+            'middle_name' => $request->middle_name,
+            'last_name' => $request->last_name,
+            'role' => $request->role,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);

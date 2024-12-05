@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
     Select,
     SelectContent,
@@ -14,7 +16,7 @@ type Props = {
     role: "service_provider" | "customer";
 };
 
-const Register = ({ role }: Props) => {
+const Login = ({ role }: Props) => {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: "",
         password: "",
@@ -81,6 +83,20 @@ const Register = ({ role }: Props) => {
                         )}
                     </div>
 
+                    <div className="flex items-center space-x-2">
+                        <Checkbox
+                            id="remember"
+                            name="remember"
+                            checked={data.remember}
+                            onCheckedChange={(checked) =>
+                                setData("remember", !!checked)
+                            }
+                        />
+                        <Label htmlFor="remember" className="text-sm">
+                            Remember me
+                        </Label>
+                    </div>
+
                     <Button
                         type="submit"
                         className="w-full"
@@ -101,4 +117,4 @@ const Register = ({ role }: Props) => {
     );
 };
 
-export default Register;
+export default Login;

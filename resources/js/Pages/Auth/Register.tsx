@@ -7,8 +7,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { Head, useForm } from "@inertiajs/react";
-import React from "react";
+import { Head, Link, useForm } from "@inertiajs/react";
+import { FormEventHandler } from "react";
 
 type Props = {
     role: "service_provider" | "customer";
@@ -25,7 +25,7 @@ const Register = ({ role }: Props) => {
         confirm_password: "",
     });
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit: FormEventHandler = (e) => {
         e.preventDefault();
         post(route("register"));
     };
@@ -207,6 +207,13 @@ const Register = ({ role }: Props) => {
                     >
                         Sign Up
                     </Button>
+
+                    <div className="text-center text-sm">
+                        Already have an account?{" "}
+                        <Link href={route("login")} className="underline">
+                            Login
+                        </Link>
+                    </div>
                 </div>
             </form>
         </div>

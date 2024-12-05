@@ -1,10 +1,22 @@
+import ServiceCard from "@/components/service-card";
+import Services from "@/components/Services";
 import Layout from "@/layouts/Layout";
-import React from "react";
+import { Category, Service } from "@/types";
 
-type Props = {};
+type Props = {
+    services: Service[];
+    categories: Category[];
+};
 
-const Dashboard = (props: Props) => {
-    return <Layout>Customer Dashboard</Layout>;
+const Dashboard = ({ services, categories }: Props) => {
+    return (
+        <Layout>
+            <div>
+                <h1 className="text-xl">Services</h1>
+                <Services services={services} categories={categories} />
+            </div>
+        </Layout>
+    );
 };
 
 export default Dashboard;

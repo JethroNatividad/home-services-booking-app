@@ -10,13 +10,7 @@ use Inertia\Response;
 
 class ServiceController extends Controller
 {
-    // Display all services for customers
-    public function all(): Response
-    {
-        return Inertia::render('Customer/Services', [
-            'services' => Service::all()
-        ]);
-    }
+
 
     /**
      * Display a listing of the resource.

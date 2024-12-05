@@ -5,6 +5,7 @@ import {
     LayoutDashboard,
     Notebook,
     Users,
+    Wrench,
 } from "lucide-react";
 
 import {
@@ -38,10 +39,18 @@ type MenuItem = {
     children?: MenuItem[];
 };
 // Menu items.
-const items: MenuItem[] = [
+const serviceProviderItems: MenuItem[] = [
     {
         title: "Dashboard",
         icon: Home,
+        name: "dashboard",
+    },
+];
+
+const customerItems: MenuItem[] = [
+    {
+        title: "Dashboard",
+        icon: Wrench,
         name: "dashboard",
     },
 ];
@@ -51,12 +60,14 @@ type AppSidebarProps = {
 };
 
 export function AppSidebar({ user }: AppSidebarProps) {
+    const items =
+        user.role === "service_provider" ? serviceProviderItems : customerItems;
     return (
         <Sidebar collapsible="icon">
             <SidebarHeader>
                 <Link href="/">
                     <SidebarMenuButton className="flex">
-                        <ApplicationLogo className="w-20 fill-sidebar-primary-foreground group-hover/menu-button:fill-sidebar-accent-foreground" />
+                        <Home className="w-20 fill-sidebar-primary-foreground group-hover/menu-button:fill-sidebar-accent-foreground" />
                         <h1 className="text-xl font-bold truncate">
                             Home Services
                         </h1>

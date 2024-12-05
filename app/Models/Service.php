@@ -15,6 +15,8 @@ class Service extends Model
         'images' => 'array',
     ];
 
+    protected $appends = ['rating', 'review_count'];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -33,5 +35,15 @@ class Service extends Model
     public function ratings()
     {
         return $this->hasMany(ServiceRating::class);
+    }
+
+    public function getRatingAttribute()
+    {
+        return $this->ratings->avg('rating');
+    }
+
+    public function getReviewCountAttribute()
+    {
+        return $this->ratings->count();
     }
 }

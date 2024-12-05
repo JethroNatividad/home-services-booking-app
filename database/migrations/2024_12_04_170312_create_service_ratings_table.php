@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('booking_id')->constrained('bookings')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('service_id')->constrained('services')->onDelete('cascade');
             $table->integer('rating')->unsigned()->check('rating >= 1 AND rating <= 5');
-            $table->text('content')->nullable();
+            $table->text('review')->nullable();
             $table->timestamps();
         });
     }

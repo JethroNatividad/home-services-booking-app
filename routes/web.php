@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Middleware\CheckUserCompleted;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -9,6 +10,8 @@ Route::middleware(['auth', CheckUserCompleted::class])->group(function () {
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+
+    Route::get('/services', [ServiceController::class, 'index'])->name('services');
 });
 
 Route::get('/', function () {

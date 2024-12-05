@@ -9,7 +9,7 @@ class ServiceRating extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['booking_id', 'user_id', 'rating', 'content'];
+    protected $fillable = ['booking_id', 'user_id', 'rating', 'review', 'service_id'];
 
     public function booking()
     {
@@ -19,5 +19,10 @@ class ServiceRating extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function service()
+    {
+        return $this->belongsTo(Service::class);
     }
 }

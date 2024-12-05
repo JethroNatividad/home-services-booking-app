@@ -68,14 +68,11 @@ class ServiceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Service $service)
+    public function show(Service $service): Response
     {
-        // Admin can view all services, service_provider can view only their own
-        if (Auth::user()->role !== 'admin' && $service->user_id !== Auth::id()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
-
-        return response()->json($service);
+        return Inertia::render('Service/Show', [
+            'service' => $service->load(['user', 'category', 'ratings']),
+        ]);
     }
 
     /**

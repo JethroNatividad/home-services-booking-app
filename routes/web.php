@@ -28,6 +28,8 @@ Route::middleware(['auth', CheckUserCompleted::class])->group(function () {
             return Inertia::render('Admin/Dashboard');
         }
     })->name('dashboard');
+
+    Route::resource('services', ServiceController::class);
 });
 
 Route::get('/', function () {

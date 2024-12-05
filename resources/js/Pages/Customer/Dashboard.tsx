@@ -1,5 +1,4 @@
-import ServiceCard from "@/components/service-card";
-import Services from "@/components/Services";
+import Services from "@/components/services";
 import Layout from "@/layouts/Layout";
 import { Category, Service } from "@/types";
 

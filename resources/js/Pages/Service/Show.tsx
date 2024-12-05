@@ -3,7 +3,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Layout from "@/layouts/Layout";
 import { Service } from "@/types";
-import { Link } from "@inertiajs/react";
 import { User, Star, ChevronLeft } from "lucide-react";
 
 type Props = {
@@ -14,10 +13,14 @@ const Show = ({ service }: Props) => {
     return (
         <Layout>
             <div className="container mx-auto p-4 space-y-4">
-                <Button variant="outline" size="icon" asChild>
-                    <Link href={route("dashboard")}>
-                        <ChevronLeft className="h-6 w-6" />
-                    </Link>
+                <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => {
+                        window.history.back();
+                    }}
+                >
+                    <ChevronLeft className="h-6 w-6" />
                 </Button>
                 <div className="grid gap-6 md:grid-cols-2">
                     <div>

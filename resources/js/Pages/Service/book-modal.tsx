@@ -72,6 +72,7 @@ export function BookingModal({
                                 onSelect={(date) =>
                                     setData("date", date as Date)
                                 }
+                                disabled={(date) => date < new Date()}
                                 className="rounded-md border w-fit"
                             />
 

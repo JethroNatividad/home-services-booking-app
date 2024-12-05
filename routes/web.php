@@ -37,6 +37,9 @@ Route::middleware(['auth', CheckUserCompleted::class])->group(function () {
     Route::get('/services/{service}', [ServiceController::class, 'show'])->name('services.show');
 
     Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
+
+    Route::get('/customer-bookings', [BookingController::class, 'customerIndex'])->name('customer.bookings.index');
+    Route::post('/bookings/{booking}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
 });
 
 Route::get('/', function () {

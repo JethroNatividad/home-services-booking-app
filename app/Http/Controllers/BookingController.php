@@ -5,15 +5,25 @@ namespace App\Http\Controllers;
 use App\Models\Booking;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Inertia\Response;
 
 class BookingController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function customerIndex(Request $request): Response
     {
-        //
+        $bookings = Booking::where('user_id', $request->user()->id)->with('service.user')->orderBy('updated_at', 'desc')->get();
+
+        return inertia('Customer/Bookings', [
+            'bookings' => $bookings,
+        ]);
+    }
+
+    public function cancel(Booking $booking)
+    {
+        $booking->update(['status' => 'canceled']);
     }
 
     /**

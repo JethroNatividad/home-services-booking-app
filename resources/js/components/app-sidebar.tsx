@@ -53,6 +53,11 @@ const customerItems: MenuItem[] = [
         icon: Wrench,
         name: "dashboard",
     },
+    {
+        title: "Bookings",
+        icon: Notebook,
+        name: "customer.bookings.index",
+    },
 ];
 
 type AppSidebarProps = {

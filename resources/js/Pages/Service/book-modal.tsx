@@ -12,6 +12,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useForm } from "@inertiajs/react";
+import { toast } from "sonner";
+import { format } from "date-fns";
 
 interface BookingModalProps {
     isOpen: boolean;
@@ -34,8 +36,17 @@ export function BookingModal({
 
     const handleSubmit: FormEventHandler = (e) => {
         e.preventDefault();
+        const bookingDate = new Date(data.date);
+        const [hours, minutes] = data.time.split(":");
+        bookingDate.setHours(parseInt(hours), parseInt(minutes));
         post(route("bookings.store"), {
             onFinish: () => {
+                toast("Booking has been created", {
+                    description: format(
+                        bookingDate,
+                        "EEEE, MMMM d, yyyy 'at' h:mm a"
+                    ),
+                });
                 reset();
                 onClose();
             },

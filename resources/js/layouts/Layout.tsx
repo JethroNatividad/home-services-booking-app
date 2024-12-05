@@ -7,6 +7,7 @@ import {
 import { usePage } from "@inertiajs/react";
 import { PropsWithChildren } from "react";
 import Cookies from "js-cookie";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function Layout({ children }: PropsWithChildren) {
     const user = usePage().props.auth.user;
@@ -21,6 +22,7 @@ export default function Layout({ children }: PropsWithChildren) {
                 </div>
                 <div className="px-6 pt-16 pb-4">{children}</div>
             </main>
+            <Toaster />
         </SidebarProvider>
     );
 }

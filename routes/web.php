@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Middleware\CheckUserCompleted;
@@ -29,7 +30,13 @@ Route::middleware(['auth', CheckUserCompleted::class])->group(function () {
         }
     })->name('dashboard');
 
-    Route::resource('services', ServiceController::class);
+
+    Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
+    Route::get('/services/create', [ServiceController::class, 'create'])->name('services.create');
+    Route::post('/services', [ServiceController::class, 'store'])->name('services.store');
+    Route::get('/services/{service}', [ServiceController::class, 'show'])->name('services.show');
+
+    Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
 });
 
 Route::get('/', function () {

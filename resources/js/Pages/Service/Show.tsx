@@ -4,12 +4,16 @@ import { Button } from "@/components/ui/button";
 import Layout from "@/layouts/Layout";
 import { Service } from "@/types";
 import { User, Star, ChevronLeft } from "lucide-react";
+import { useState } from "react";
+import { BookingModal } from "./book-modal";
 
 type Props = {
     service: Service;
 };
 
 const Show = ({ service }: Props) => {
+    const [isOpen, setIsOpen] = useState(false);
+
     return (
         <Layout>
             <div className="container mx-auto p-4 space-y-4">
@@ -94,7 +98,18 @@ const Show = ({ service }: Props) => {
                                 ({service.review_count} reviews)
                             </span>
                         </div>
-                        <Button className="w-full">Book Now</Button>
+                        <Button
+                            className="w-full"
+                            onClick={() => setIsOpen(true)}
+                        >
+                            Book Now
+                        </Button>
+                        <BookingModal
+                            isOpen={isOpen}
+                            onClose={() => setIsOpen(false)}
+                            service_id={service.id}
+                            serviceName={service.name}
+                        />
                     </div>
                 </div>
                 <div className="mt-12">

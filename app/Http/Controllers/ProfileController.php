@@ -18,10 +18,7 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
-        return Inertia::render('Profile/Edit', [
-            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
-            'status' => session('status'),
-        ]);
+        return Inertia::render('Profile/Edit');
     }
 
     /**
@@ -48,6 +45,8 @@ class ProfileController extends Controller
             'lat' => ['required', 'string'],
             'lng' => ['required', 'string'],
         ]);
+
+        $request->user()->fill($request->only('contact_number', 'address', 'lat', 'lng'));
 
         $request->user()->completed = true;
 

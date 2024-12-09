@@ -55,7 +55,7 @@ const Landing = () => {
                             className="px-7 py-5 text-lg"
                             asChild
                         >
-                            <Link href="/app/signin">Login</Link>
+                            <Link href={route("login")}>Login</Link>
                         </Button>
                     </div>
                 </div>

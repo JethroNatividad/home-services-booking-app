@@ -22,12 +22,22 @@ interface MapPickerProps {
         lat: number;
         lng: number;
     }) => void;
+
+    initialLocation?: {
+        address: string;
+        lat: number;
+        lng: number;
+    };
 }
 
-const MapPicker = ({ setLocation }: MapPickerProps) => {
-    const [searchQuery, setSearchQuery] = useState("");
+const MapPicker = ({ setLocation, initialLocation }: MapPickerProps) => {
+    const [searchQuery, setSearchQuery] = useState(
+        initialLocation?.address || ""
+    );
+
     const [position, setPosition] = useState<[number, number]>([
-        6.904691, 122.076462,
+        initialLocation?.lat || 6.904691,
+        initialLocation?.lng || 122.076462,
     ]);
 
     interface SearchResult {

@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/select";
 import { Head, useForm } from "@inertiajs/react";
 import React from "react";
-import MapPicker from "./Components/MapPicker";
+import MapPicker from "@/components/map-picker";
 
 const Register = () => {
     const { data, setData, post, processing, errors, reset } = useForm({

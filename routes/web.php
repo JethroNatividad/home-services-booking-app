@@ -40,6 +40,9 @@ Route::middleware(['auth', CheckUserCompleted::class])->group(function () {
 
     Route::get('/customer-bookings', [BookingController::class, 'customerIndex'])->name('customer.bookings.index');
     Route::post('/bookings/{booking}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
+
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
 
 Route::get('/', function () {

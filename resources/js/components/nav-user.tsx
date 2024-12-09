@@ -85,7 +85,7 @@ export function NavUser({ user }: NavUserProps) {
                             <Link href={route("profile.edit")}>
                                 <DropdownMenuItem>
                                     <User />
-                                    Update Account
+                                    Account
                                 </DropdownMenuItem>
                             </Link>
                         </DropdownMenuGroup>

@@ -46,6 +46,8 @@ class ProfileController extends Controller
             'lng' => ['required', 'string'],
         ]);
 
+        $request->user()->fill($request->only('contact_number', 'address', 'lat', 'lng'));
+
         $request->user()->completed = true;
 
         $request->user()->save();

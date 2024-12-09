@@ -82,10 +82,12 @@ export function NavUser({ user }: NavUserProps) {
                             </div>
                         </DropdownMenuLabel>
                         <DropdownMenuGroup>
-                            <DropdownMenuItem>
-                                <User />
-                                Account
-                            </DropdownMenuItem>
+                            <Link href={route("profile.edit")}>
+                                <DropdownMenuItem>
+                                    <User />
+                                    Update Account
+                                </DropdownMenuItem>
+                            </Link>
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator />
 

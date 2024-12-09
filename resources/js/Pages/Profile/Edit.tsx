@@ -36,104 +36,109 @@ const Edit = () => {
             <div className="space-y-4">
                 <h1 className="text-xl">Account</h1>
                 <hr />
-                <form onSubmit={handleSubmit} className="w-full max-w-xl">
-                    <div className="space-y-4">
-                        <div className="w-full space-y-2">
-                            <label
-                                htmlFor="first_name"
-                                className="block text-sm"
-                            >
-                                First Name
-                            </label>
-                            <Input
-                                id="first_name"
-                                type="text"
-                                value={data.first_name}
-                                onChange={(e) =>
-                                    setData("first_name", e.target.value)
-                                }
-                                placeholder="Juan"
-                                className="w-full"
-                            />
-                            {errors.first_name && (
-                                <div className="text-red-500 text-sm">
-                                    {errors.first_name}
-                                </div>
-                            )}
-                        </div>
+                <form onSubmit={handleSubmit} className="w-full space-y-4">
+                    <div className="grid lg:grid-cols-2 gap-4 grid-cols-1">
+                        <div className="space-y-4">
+                            <div className="w-full space-y-2">
+                                <label
+                                    htmlFor="first_name"
+                                    className="block text-sm"
+                                >
+                                    First Name
+                                </label>
+                                <Input
+                                    id="first_name"
+                                    type="text"
+                                    value={data.first_name}
+                                    onChange={(e) =>
+                                        setData("first_name", e.target.value)
+                                    }
+                                    placeholder="Juan"
+                                    className="w-full"
+                                />
+                                {errors.first_name && (
+                                    <div className="text-red-500 text-sm">
+                                        {errors.first_name}
+                                    </div>
+                                )}
+                            </div>
 
-                        <div className="w-full space-y-2">
-                            <label
-                                htmlFor="middle_name"
-                                className="block text-sm"
-                            >
-                                Middle Name (Optional)
-                            </label>
-                            <Input
-                                id="middle_name"
-                                type="text"
-                                value={data.middle_name}
-                                onChange={(e) =>
-                                    setData("middle_name", e.target.value)
-                                }
-                                placeholder="Dela"
-                                className="w-full"
-                            />
-                            {errors.middle_name && (
-                                <div className="text-red-500 text-sm">
-                                    {errors.middle_name}
-                                </div>
-                            )}
-                        </div>
+                            <div className="w-full space-y-2">
+                                <label
+                                    htmlFor="middle_name"
+                                    className="block text-sm"
+                                >
+                                    Middle Name (Optional)
+                                </label>
+                                <Input
+                                    id="middle_name"
+                                    type="text"
+                                    value={data.middle_name}
+                                    onChange={(e) =>
+                                        setData("middle_name", e.target.value)
+                                    }
+                                    placeholder="Dela"
+                                    className="w-full"
+                                />
+                                {errors.middle_name && (
+                                    <div className="text-red-500 text-sm">
+                                        {errors.middle_name}
+                                    </div>
+                                )}
+                            </div>
 
-                        <div className="w-full space-y-2">
-                            <label
-                                htmlFor="last_name"
-                                className="block text-sm"
-                            >
-                                Last Name
-                            </label>
-                            <Input
-                                id="last_name"
-                                type="text"
-                                value={data.last_name}
-                                onChange={(e) =>
-                                    setData("last_name", e.target.value)
-                                }
-                                placeholder="Cruz"
-                                className="w-full"
-                            />
-                            {errors.last_name && (
-                                <div className="text-red-500 text-sm">
-                                    {errors.last_name}
-                                </div>
-                            )}
+                            <div className="w-full space-y-2">
+                                <label
+                                    htmlFor="last_name"
+                                    className="block text-sm"
+                                >
+                                    Last Name
+                                </label>
+                                <Input
+                                    id="last_name"
+                                    type="text"
+                                    value={data.last_name}
+                                    onChange={(e) =>
+                                        setData("last_name", e.target.value)
+                                    }
+                                    placeholder="Cruz"
+                                    className="w-full"
+                                />
+                                {errors.last_name && (
+                                    <div className="text-red-500 text-sm">
+                                        {errors.last_name}
+                                    </div>
+                                )}
+                            </div>
+                            <div className="w-full space-y-2">
+                                <label
+                                    htmlFor="contact_number"
+                                    className="block text-sm"
+                                >
+                                    Contact Number
+                                </label>
+                                <Input
+                                    id="contact_number"
+                                    type="tel"
+                                    value={data.contact_number}
+                                    onChange={(e) =>
+                                        setData(
+                                            "contact_number",
+                                            e.target.value
+                                        )
+                                    }
+                                    placeholder="09123456789"
+                                    className="w-full"
+                                />
+                                {errors.contact_number && (
+                                    <div className="text-red-500 text-sm">
+                                        {errors.contact_number}
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                        <div className="w-full space-y-2">
-                            <label
-                                htmlFor="contact_number"
-                                className="block text-sm"
-                            >
-                                Contact Number
-                            </label>
-                            <Input
-                                id="contact_number"
-                                type="tel"
-                                value={data.contact_number}
-                                onChange={(e) =>
-                                    setData("contact_number", e.target.value)
-                                }
-                                placeholder="09123456789"
-                                className="w-full"
-                            />
-                            {errors.contact_number && (
-                                <div className="text-red-500 text-sm">
-                                    {errors.contact_number}
-                                </div>
-                            )}
-                        </div>
-
                         <div className="space-y-2">
+                            <label className="block text-sm">Location</label>
                             <MapPicker
                                 setLocation={({ address, lat, lng }) => {
                                     setData({
@@ -165,15 +170,11 @@ const Edit = () => {
                                 </div>
                             )}
                         </div>
-
-                        <Button
-                            type="submit"
-                            className="w-full"
-                            disabled={processing}
-                        >
-                            Submit
-                        </Button>
                     </div>
+
+                    <Button type="submit" disabled={processing}>
+                        Update Profile
+                    </Button>
                 </form>
             </div>
         </Layout>

@@ -78,7 +78,7 @@ const ManageServices = ({ services: initialServices, categories }: Props) => {
                         </Select>
                     </div>
                 </div>
-                <Button className="w-fit">
+                <Button className="w-fit" asChild>
                     <Link href={route("services.create")}>Create Service</Link>
                 </Button>
             </div>

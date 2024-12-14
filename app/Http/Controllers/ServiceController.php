@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,14 +31,16 @@ class ServiceController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): Response
     {
         // Only service_provider can create services
         if (Auth::user()->role !== 'service_provider') {
-            return response()->json(['error' => 'Unauthorized'], 403);
+            abort(403, 'Unauthorized action.');
         }
 
-        return response()->json(['message' => 'Create service form']);
+        return Inertia::render('Service/Create', [
+            'categories' => Category::all(),
+        ]);
     }
 
     /**
@@ -47,7 +50,7 @@ class ServiceController extends Controller
     {
         // Only service_provider can store services
         if (Auth::user()->role !== 'service_provider') {
-            return response()->json(['error' => 'Unauthorized'], 403);
+            abort(403, 'Unauthorized action.');
         }
 
         $validated = $request->validate([
@@ -82,7 +85,7 @@ class ServiceController extends Controller
     {
         // Only service_provider can edit their own services
         if (Auth::user()->role !== 'admin' && $service->user_id !== Auth::id()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
+            abort(403, 'Unauthorized action.');
         }
 
         return response()->json(['message' => 'Edit service form', 'service' => $service]);
@@ -95,7 +98,7 @@ class ServiceController extends Controller
     {
         // Only service_provider can update their own services
         if (Auth::user()->role !== 'admin' && $service->user_id !== Auth::id()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
+            abort(403, 'Unauthorized action.');
         }
 
         $validated = $request->validate([
@@ -118,7 +121,7 @@ class ServiceController extends Controller
     {
         // Only service_provider can delete their own services
         if (Auth::user()->role !== 'admin' && $service->user_id !== Auth::id()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
+            abort(403, 'Unauthorized action.');
         }
 
         $service->delete();

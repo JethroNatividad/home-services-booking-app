@@ -22,7 +22,10 @@ Route::middleware(['auth', CheckUserCompleted::class])->group(function () {
         }
 
         if (Auth::user()->role === 'service_provider') {
-            return Inertia::render('ServiceProvider/Dashboard');
+            return Inertia::render('ServiceProvider/Dashboard', [
+                'services' => Service::where('user_id', Auth::id())->with(['user', 'category'])->get(),
+                'categories' => Category::all()
+            ]);
         }
 
         if (Auth::user()->role === 'admin') {

@@ -57,11 +57,22 @@ class ServiceController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric',
-            'images' => 'nullable|array',
+            'images' => 'required|array|min:1',
+            'images.*' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'category_id' => 'required|exists:categories,id',
         ]);
 
         $validated['user_id'] = Auth::id();
+
+        $imagePaths = [];
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('services', 'public');
+                $imagePaths[] = '/storage/' . $path;
+            }
+        }
+
+        $validated['images'] = $imagePaths;
 
         $service = Service::create($validated);
 

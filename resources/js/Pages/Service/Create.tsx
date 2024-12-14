@@ -24,12 +24,28 @@ const Create = ({ categories }: Props) => {
         name: "",
         description: "",
         price: "",
-        images: [],
+        images: null as FileList | null,
     });
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        post(route("services.store"));
+        const formData = new FormData();
+        formData.append("category_id", data.category_id);
+        formData.append("name", data.name);
+        formData.append("description", data.description);
+        formData.append("price", data.price);
+
+        // Append multiple files
+        if (data.images) {
+            Array.from(data.images).forEach((file) => {
+                formData.append("images[]", file);
+            });
+        }
+        post(route("services.store"), {
+            forceFormData: true,
+            data: formData,
+            preserveScroll: true,
+        });
     };
 
     return (
@@ -89,6 +105,71 @@ const Create = ({ categories }: Props) => {
                             {errors.name && (
                                 <div className="text-red-500 text-sm">
                                     {errors.name}
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="w-full space-y-2">
+                            <label
+                                htmlFor="description"
+                                className="block text-sm"
+                            >
+                                Description
+                            </label>
+                            <Input
+                                id="description"
+                                type="text"
+                                value={data.description}
+                                onChange={(e) =>
+                                    setData("description", e.target.value)
+                                }
+                                placeholder="Description"
+                                className="w-full"
+                            />
+                            {errors.description && (
+                                <div className="text-red-500 text-sm">
+                                    {errors.description}
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="w-full space-y-2">
+                            <label htmlFor="price" className="block text-sm">
+                                Price
+                            </label>
+                            <Input
+                                id="price"
+                                type="number"
+                                value={data.price}
+                                onChange={(e) =>
+                                    setData("price", e.target.value)
+                                }
+                                placeholder="Price"
+                                className="w-full"
+                            />
+                            {errors.price && (
+                                <div className="text-red-500 text-sm">
+                                    {errors.price}
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="w-full space-y-2">
+                            <label htmlFor="images" className="block text-sm">
+                                Images
+                            </label>
+                            <Input
+                                id="images"
+                                type="file"
+                                multiple
+                                onChange={(e) =>
+                                    setData("images", e.target.files)
+                                }
+                                className="w-full"
+                            />
+                            {errors.images && (
+                                <div className="text-red-500 text-sm">
+                                    {errors.images}
                                 </div>
                             )}
                         </div>

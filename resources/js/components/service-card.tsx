@@ -8,7 +8,8 @@ import {
     CardHeader,
 } from "@/components/ui/card";
 import { Service } from "@/types";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
+import { Button } from "./ui/button";
 
 export default function ServiceCard({
     images,
@@ -21,14 +22,16 @@ export default function ServiceCard({
     name,
     id,
 }: Service) {
+    const currentUser = usePage().props.auth.user;
+
     const truncatedDescription =
         description.length > 100
             ? `${description.substring(0, 97)}...`
             : description;
 
     return (
-        <Link href={route("services.show", { service: id })}>
-            <Card className="w-full max-w-sm overflow-hidden">
+        <Card className="w-full max-w-sm overflow-hidden">
+            <Link href={route("services.show", { service: id })}>
                 <CardHeader className="p-0">
                     <div className="relative h-48 w-full">
                         <img
@@ -73,7 +76,16 @@ export default function ServiceCard({
                         </span>
                     </div>
                 </CardContent>
-            </Card>
-        </Link>
+            </Link>
+            {currentUser.id === user.id && (
+                <CardFooter className="p-4">
+                    <Button asChild>
+                        <Link href={route("services.edit", { service: id })}>
+                            Edit
+                        </Link>
+                    </Button>
+                </CardFooter>
+            )}
+        </Card>
     );
 }

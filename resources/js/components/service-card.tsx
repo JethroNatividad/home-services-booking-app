@@ -116,7 +116,7 @@ export default function ServiceCard({
                                 <Button asChild variant="destructive">
                                     <AlertDialogAction asChild>
                                         <Link
-                                            href={route("services.edit", {
+                                            href={route("services.destroy", {
                                                 service: id,
                                             })}
                                             method="delete"

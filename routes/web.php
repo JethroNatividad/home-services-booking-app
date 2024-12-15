@@ -40,6 +40,7 @@ Route::middleware(['auth', CheckUserCompleted::class])->group(function () {
     Route::get('/services/{service}', [ServiceController::class, 'show'])->name('services.show');
     Route::get('/services/{service}/edit', [ServiceController::class, 'edit'])->name('services.edit');
     Route::post('/services/{service}', [ServiceController::class, 'update'])->name('services.update');
+    Route::delete('/services/{service}', [ServiceController::class, 'destroy'])->name('services.destroy');
 
     Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
 

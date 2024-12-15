@@ -6,12 +6,15 @@ import { Service } from "@/types";
 import { User, Star, ChevronLeft } from "lucide-react";
 import { useState } from "react";
 import { BookingModal } from "./book-modal";
+import { usePage } from "@inertiajs/react";
 
 type Props = {
     service: Service;
 };
 
 const Show = ({ service }: Props) => {
+    const user = usePage().props.auth.user;
+
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -101,6 +104,7 @@ const Show = ({ service }: Props) => {
                         <Button
                             className="w-full"
                             onClick={() => setIsOpen(true)}
+                            disabled={service.user.id === user.id}
                         >
                             Book Now
                         </Button>

@@ -10,6 +10,17 @@ import {
 import { Service } from "@/types";
 import { Link, usePage } from "@inertiajs/react";
 import { Button } from "./ui/button";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export default function ServiceCard({
     images,
@@ -78,12 +89,45 @@ export default function ServiceCard({
                 </CardContent>
             </Link>
             {currentUser.id === user.id && (
-                <CardFooter className="p-4">
+                <CardFooter className="p-4 space-x-4">
                     <Button asChild>
                         <Link href={route("services.edit", { service: id })}>
                             Edit
                         </Link>
                     </Button>
+
+                    <AlertDialog>
+                        <Button variant="destructive" asChild>
+                            <AlertDialogTrigger>Delete</AlertDialogTrigger>
+                        </Button>
+                        <AlertDialogContent>
+                            <AlertDialogHeader>
+                                <AlertDialogTitle>
+                                    Are you absolutely sure?
+                                </AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    This action cannot be undone. This will
+                                    permanently delete this service from the
+                                    database.
+                                </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <Button asChild variant="destructive">
+                                    <AlertDialogAction asChild>
+                                        <Link
+                                            href={route("services.edit", {
+                                                service: id,
+                                            })}
+                                            method="delete"
+                                        >
+                                            Delete
+                                        </Link>
+                                    </AlertDialogAction>
+                                </Button>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
                 </CardFooter>
             )}
         </Card>

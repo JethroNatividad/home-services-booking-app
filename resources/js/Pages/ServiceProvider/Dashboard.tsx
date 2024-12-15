@@ -11,7 +11,7 @@ const Dashboard = ({ services, categories }: Props) => {
     return (
         <Layout>
             <div>
-                <h1 className="text-xl">Services</h1>
+                <h1 className="text-xl">Your Services</h1>
                 <ManageServices services={services} categories={categories} />
             </div>
         </Layout>

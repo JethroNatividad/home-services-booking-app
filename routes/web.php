@@ -38,6 +38,8 @@ Route::middleware(['auth', CheckUserCompleted::class])->group(function () {
     Route::get('/services/create', [ServiceController::class, 'create'])->name('services.create');
     Route::post('/services', [ServiceController::class, 'store'])->name('services.store');
     Route::get('/services/{service}', [ServiceController::class, 'show'])->name('services.show');
+    Route::get('/services/{service}/edit', [ServiceController::class, 'edit'])->name('services.edit');
+    Route::post('/services/{service}', [ServiceController::class, 'update'])->name('services.update');
 
     Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
 

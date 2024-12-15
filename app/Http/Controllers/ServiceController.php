@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -76,7 +77,8 @@ class ServiceController extends Controller
 
         $service = Service::create($validated);
 
-        return response()->json($service, 201);
+        // redirect to the service show page
+        return Redirect::route('dashboard');
     }
 
     /**
@@ -99,7 +101,10 @@ class ServiceController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        return response()->json(['message' => 'Edit service form', 'service' => $service]);
+        return Inertia::render('Service/Edit', [
+            'service' => $service->load('category'),
+            'categories' => Category::all(),
+        ]);
     }
 
     /**
@@ -116,13 +121,25 @@ class ServiceController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric',
-            'images' => 'nullable|array',
+            'images' => 'nullable|array|min:1',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'category_id' => 'required|exists:categories,id',
         ]);
 
+        $imagePaths = $service->images;
+        if ($request->hasFile('images')) {
+            $imagePaths = [];
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('services', 'public');
+                $imagePaths[] = '/storage/' . $path;
+            }
+        }
+
+        $validated['images'] = $imagePaths;
+
         $service->update($validated);
 
-        return response()->json($service);
+        return Redirect::route('dashboard');
     }
 
     /**

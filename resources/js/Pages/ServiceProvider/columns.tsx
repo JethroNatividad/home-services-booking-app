@@ -95,6 +95,16 @@ export const columns: ColumnDef<Booking>[] = [
     {
         accessorKey: "service.name",
         header: "Service",
+        cell: ({ row }) => {
+            return (
+                <Link
+                    className="underline text-blue-500"
+                    href={route("services.show", row.original.service.id)}
+                >
+                    {row.original.service.name}
+                </Link>
+            );
+        },
     },
     {
         accessorKey: "datetime",

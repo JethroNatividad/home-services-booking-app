@@ -45,6 +45,11 @@ const serviceProviderItems: MenuItem[] = [
         icon: Home,
         name: "dashboard",
     },
+    {
+        title: "Bookings",
+        icon: Notebook,
+        name: "service_provider.bookings.index",
+    },
 ];
 
 const customerItems: MenuItem[] = [

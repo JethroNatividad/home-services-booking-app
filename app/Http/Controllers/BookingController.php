@@ -21,6 +21,19 @@ class BookingController extends Controller
         ]);
     }
 
+    public function serviceProviderIndex(Request $request): Response
+    {
+        // Get all bookings for the service provider user, booking->service->user is the service provider, booking->user is the customer
+        $bookings = Booking::whereHas('service', function ($query) use ($request) {
+            $query->where('user_id', $request->user()->id);
+        })->with(['user', 'service.user'])->orderBy('updated_at', 'desc')->get();
+
+
+        return inertia('ServiceProvider/Bookings', [
+            'bookings' => $bookings,
+        ]);
+    }
+
     public function cancel(Booking $booking)
     {
         $booking->update(['status' => 'canceled']);

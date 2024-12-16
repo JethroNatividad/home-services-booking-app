@@ -68,7 +68,7 @@ class BookingController extends Controller
         // add 1 day to the date
         $datetime->addDay();
 
-        $booking->update(['datetime' => $datetime, 'status' => 'rescheduled']);
+        $booking->update(['datetime' => $datetime, 'status' => $request->user()->role === 'service_provider' ? 'rescheduled' : 'pending']);
     }
 
     /**

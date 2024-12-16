@@ -39,8 +39,6 @@ export function RescheduleModal({
         const [hours, minutes] = data.time.split(":");
         bookingDate.setHours(parseInt(hours), parseInt(minutes));
 
-        alert(JSON.stringify(data));
-        // add 1 day to the date
         post(route("bookings.reschedule", booking.id), {
             onFinish: () => {
                 toast("Booking Rescheduled", {

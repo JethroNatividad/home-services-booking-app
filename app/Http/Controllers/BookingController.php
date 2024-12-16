@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Booking;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Inertia\Response;
 
 class BookingController extends Controller
@@ -39,6 +40,37 @@ class BookingController extends Controller
         $booking->update(['status' => 'canceled']);
     }
 
+    public function approve(Booking $booking)
+    {
+        $booking->update(['status' => 'active']);
+    }
+
+    public function reject(Booking $booking)
+    {
+        $booking->update(['status' => 'rejected']);
+    }
+
+    public function complete(Booking $booking)
+    {
+        $booking->update(['status' => 'completed']);
+    }
+
+    public function reschedule(Booking $booking, Request $request)
+    {
+        $request->validate([
+            'date' => 'required|date',
+            'time' => 'required|date_format:H:i',
+        ]);
+
+        // Parse the date and time using Carbon
+        $datetime = Carbon::parse($request->date)->setTimeFromTimeString($request->time);
+
+        // add 1 day to the date
+        $datetime->addDay();
+
+        $booking->update(['datetime' => $datetime, 'status' => 'rescheduled']);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -60,6 +92,7 @@ class BookingController extends Controller
 
         // Parse the date and time using Carbon
         $datetime = Carbon::parse($request->date)->setTimeFromTimeString($request->time);
+        $datetime->addDay();
 
         Booking::create([
             'service_id' => $request->service_id,

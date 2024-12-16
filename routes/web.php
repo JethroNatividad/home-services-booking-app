@@ -46,6 +46,10 @@ Route::middleware(['auth', CheckUserCompleted::class])->group(function () {
 
     Route::get('/customer-bookings', [BookingController::class, 'customerIndex'])->name('customer.bookings.index');
     Route::post('/bookings/{booking}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
+    Route::post('/bookings/{booking}/approve', [BookingController::class, 'approve'])->name('bookings.approve');
+    Route::post('/bookings/{booking}/reject', [BookingController::class, 'reject'])->name('bookings.reject');
+    Route::post('/bookings/{booking}/complete', [BookingController::class, 'complete'])->name('bookings.complete');
+    Route::post('/bookings/{booking}/reschedule', [BookingController::class, 'reschedule'])->name('bookings.reschedule');
 
     Route::get('/service-provider-bookings', [BookingController::class, 'serviceProviderIndex'])->name('service_provider.bookings.index');
 

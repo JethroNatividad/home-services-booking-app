@@ -20,7 +20,13 @@ export interface Booking {
     user: User;
     service: Service;
     datetime: string;
-    status: "pending" | "active" | "rejected" | "completed" | "canceled";
+    status:
+        | "pending"
+        | "active"
+        | "rejected"
+        | "completed"
+        | "canceled"
+        | "rescheduled";
     created_at: string;
     updated_at: string;
 }

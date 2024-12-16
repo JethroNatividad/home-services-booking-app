@@ -1,3 +1,4 @@
+import { RescheduleModal } from "@/components/reschedule-modal";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -22,8 +23,10 @@ import { Link } from "@inertiajs/react";
 import { ColumnDef, Row } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { ArrowUpDown, LucideMoreHorizontal } from "lucide-react";
+import { useState } from "react";
 
 const ActionsCell = ({ row }: { row: Row<Booking> }) => {
+    const [rescheduleOpen, setRescheduleOpen] = useState(false);
     return (
         <AlertDialog>
             <DropdownMenu>
@@ -35,13 +38,50 @@ const ActionsCell = ({ row }: { row: Row<Booking> }) => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                    <DropdownMenuItem>Approve</DropdownMenuItem>
-                    <DropdownMenuItem>Reschedule</DropdownMenuItem>
-                    <AlertDialogTrigger asChild>
-                        <DropdownMenuItem>Reject</DropdownMenuItem>
-                    </AlertDialogTrigger>
+                    {row.original.status === "pending" && (
+                        <>
+                            <DropdownMenuItem>
+                                <Link
+                                    method="post"
+                                    href={route(
+                                        "bookings.approve",
+                                        row.original.id
+                                    )}
+                                >
+                                    Approve
+                                </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={() => setRescheduleOpen(true)}
+                            >
+                                Reschedule
+                            </DropdownMenuItem>
+
+                            <AlertDialogTrigger asChild>
+                                <DropdownMenuItem>Reject</DropdownMenuItem>
+                            </AlertDialogTrigger>
+                        </>
+                    )}
+                    {row.original.status === "active" && (
+                        <>
+                            <DropdownMenuItem>Complete</DropdownMenuItem>
+                            <DropdownMenuItem>Cancel</DropdownMenuItem>
+                        </>
+                    )}
+                    {row.original.status === "rescheduled" && (
+                        <DropdownMenuItem
+                            onClick={() => setRescheduleOpen(true)}
+                        >
+                            Reschedule
+                        </DropdownMenuItem>
+                    )}
                 </DropdownMenuContent>
             </DropdownMenu>
+            <RescheduleModal
+                isOpen={rescheduleOpen}
+                onClose={() => setRescheduleOpen(false)}
+                booking={row.original}
+            />
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle>Are you sure?</AlertDialogTitle>

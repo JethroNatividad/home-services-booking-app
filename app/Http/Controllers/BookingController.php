@@ -65,9 +65,6 @@ class BookingController extends Controller
         // Parse the date and time using Carbon
         $datetime = Carbon::parse($request->date)->setTimeFromTimeString($request->time);
 
-        // add 1 day to the date
-        $datetime->addDay();
-
         $booking->update(['datetime' => $datetime, 'status' => $request->user()->role === 'service_provider' ? 'rescheduled' : 'pending']);
     }
 

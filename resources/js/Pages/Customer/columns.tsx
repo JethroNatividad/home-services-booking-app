@@ -1,3 +1,4 @@
+import { RescheduleModal } from "@/components/reschedule-modal";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -22,8 +23,11 @@ import { Link } from "@inertiajs/react";
 import { ColumnDef, Row } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { ArrowUpDown, LucideMoreHorizontal } from "lucide-react";
+import { useState } from "react";
 
 const ActionsCell = ({ row }: { row: Row<Booking> }) => {
+    const [rescheduleOpen, setRescheduleOpen] = useState(false);
+
     return (
         <AlertDialog>
             <DropdownMenu>
@@ -36,11 +40,46 @@ const ActionsCell = ({ row }: { row: Row<Booking> }) => {
                 <DropdownMenuContent align="end">
                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-                    <AlertDialogTrigger asChild>
-                        <DropdownMenuItem>Cancel</DropdownMenuItem>
-                    </AlertDialogTrigger>
+                    {row.original.status === "pending" && (
+                        <>
+                            <DropdownMenuItem
+                                onClick={() => setRescheduleOpen(true)}
+                            >
+                                Reschedule
+                            </DropdownMenuItem>
+                            <AlertDialogTrigger asChild>
+                                <DropdownMenuItem>Cancel</DropdownMenuItem>
+                            </AlertDialogTrigger>
+                        </>
+                    )}
+
+                    {row.original.status === "rescheduled" && (
+                        <>
+                            <DropdownMenuItem>
+                                <Link
+                                    method="post"
+                                    href={route(
+                                        "bookings.approve",
+                                        row.original.id
+                                    )}
+                                >
+                                    Approve
+                                </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={() => setRescheduleOpen(true)}
+                            >
+                                Reschedule
+                            </DropdownMenuItem>
+                        </>
+                    )}
                 </DropdownMenuContent>
             </DropdownMenu>
+            <RescheduleModal
+                isOpen={rescheduleOpen}
+                onClose={() => setRescheduleOpen(false)}
+                booking={row.original}
+            />
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle>Are you sure?</AlertDialogTitle>
@@ -127,7 +166,9 @@ export const columns: ColumnDef<Booking>[] = [
         accessorKey: "service.user",
         header: "Service Provider",
         cell: ({ row }) => {
-            return `${row.original.service.user.first_name} ${row.original.service.user.middle_name} ${row.original.service.user.last_name}`;
+            return `${row.original.service.user.first_name} ${
+                row.original.service.user.middle_name ?? ""
+            } ${row.original.service.user.last_name}`;
         },
     },
     {

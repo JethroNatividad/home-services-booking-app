@@ -69,9 +69,17 @@ export function BookingModal({
                             <Calendar
                                 mode="single"
                                 selected={data.date}
-                                onSelect={(date) =>
-                                    setData("date", date as Date)
-                                }
+                                onSelect={(date) => {
+                                    if (date) {
+                                        const newDate = new Date(date);
+                                        // set time to date.date time
+                                        newDate.setHours(
+                                            data.date.getHours(),
+                                            data.date.getMinutes()
+                                        );
+                                        setData("date", date);
+                                    }
+                                }}
                                 disabled={(date) => date < new Date()}
                                 className="rounded-md border w-fit"
                             />

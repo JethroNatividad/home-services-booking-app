@@ -64,7 +64,17 @@ const ActionsCell = ({ row }: { row: Row<Booking> }) => {
                     )}
                     {row.original.status === "active" && (
                         <>
-                            <DropdownMenuItem>Complete</DropdownMenuItem>
+                            <DropdownMenuItem asChild>
+                                <Link
+                                    method="post"
+                                    href={route(
+                                        "bookings.complete",
+                                        row.original.id
+                                    )}
+                                >
+                                    Complete
+                                </Link>
+                            </DropdownMenuItem>
                             <DropdownMenuItem>Cancel</DropdownMenuItem>
                         </>
                     )}

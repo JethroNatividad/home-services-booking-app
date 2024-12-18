@@ -19,11 +19,19 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Booking } from "@/types";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import { ColumnDef, Row } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { ArrowUpDown, LucideMoreHorizontal } from "lucide-react";
 import { useState } from "react";
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
+import StaticMap from "@/components/static-map";
 
 const ActionsCell = ({ row }: { row: Row<Booking> }) => {
     const [rescheduleOpen, setRescheduleOpen] = useState(false);
@@ -136,6 +144,54 @@ const ActionsCell = ({ row }: { row: Row<Booking> }) => {
     );
 };
 
+const UserCell = ({ row }: { row: Row<Booking> }) => {
+    const currentUser = usePage().props.auth.user;
+    return (
+        <Dialog>
+            <DialogTrigger>
+                <p className="underline text-blue-500">
+                    {row.original.service.user.first_name}{" "}
+                    {row.original.service.user.middle_name}{" "}
+                    {row.original.service.user.last_name}
+                </p>
+            </DialogTrigger>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>
+                        Service Provider {row.original.service.user.first_name}{" "}
+                        {row.original.service.user.middle_name}{" "}
+                        {row.original.service.user.last_name}
+                    </DialogTitle>
+                </DialogHeader>
+                <div>
+                    <p>
+                        <strong>Email:</strong>{" "}
+                        {row.original.service.user.email}
+                    </p>
+                    <p>
+                        <strong>Phone:</strong>{" "}
+                        {row.original.service.user.contact_number}
+                    </p>
+                    <p>
+                        <strong>Address:</strong>{" "}
+                        {row.original.service.user.address}
+                    </p>
+                    <StaticMap
+                        from={{
+                            lat: Number(currentUser.lat),
+                            lng: Number(currentUser.lng),
+                        }}
+                        to={{
+                            lat: Number(row.original.service.user.lat),
+                            lng: Number(row.original.service.user.lng),
+                        }}
+                    />
+                </div>
+            </DialogContent>
+        </Dialog>
+    );
+};
+
 export const columns: ColumnDef<Booking>[] = [
     {
         accessorKey: "id",
@@ -195,11 +251,7 @@ export const columns: ColumnDef<Booking>[] = [
     {
         accessorKey: "service.user",
         header: "Service Provider",
-        cell: ({ row }) => {
-            return `${row.original.service.user.first_name} ${
-                row.original.service.user.middle_name ?? ""
-            } ${row.original.service.user.last_name}`;
-        },
+        cell: UserCell,
     },
     {
         accessorKey: "status",

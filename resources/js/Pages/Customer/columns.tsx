@@ -73,6 +73,24 @@ const ActionsCell = ({ row }: { row: Row<Booking> }) => {
                             </DropdownMenuItem>
                         </>
                     )}
+
+                    {row.original.status === "active" && (
+                        <>
+                            <AlertDialogTrigger asChild>
+                                <DropdownMenuItem>Cancel</DropdownMenuItem>
+                            </AlertDialogTrigger>
+                        </>
+                    )}
+
+                    {row.original.status === "completed" && (
+                        <DropdownMenuItem>
+                            <Link
+                                href={route("reviews.create", row.original.id)}
+                            >
+                                Rate
+                            </Link>
+                        </DropdownMenuItem>
+                    )}
                 </DropdownMenuContent>
             </DropdownMenu>
             <RescheduleModal

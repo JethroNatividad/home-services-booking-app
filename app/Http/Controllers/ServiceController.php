@@ -87,7 +87,7 @@ class ServiceController extends Controller
     public function show(Service $service): Response
     {
         return Inertia::render('Service/Show', [
-            'service' => $service->load(['user', 'category', 'ratings']),
+            'service' => $service->load(['user', 'category', 'ratings.user']),
         ]);
     }
 

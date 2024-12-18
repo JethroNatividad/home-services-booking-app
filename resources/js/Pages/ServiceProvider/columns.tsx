@@ -1,4 +1,5 @@
 import { RescheduleModal } from "@/components/reschedule-modal";
+import StaticMap from "@/components/static-map";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -12,6 +13,13 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
+import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
@@ -19,7 +27,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Booking } from "@/types";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import { ColumnDef, Row } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { ArrowUpDown, LucideMoreHorizontal } from "lucide-react";
@@ -118,6 +126,52 @@ const ActionsCell = ({ row }: { row: Row<Booking> }) => {
     );
 };
 
+const UserCell = ({ row }: { row: Row<Booking> }) => {
+    const currentUser = usePage().props.auth.user;
+    return (
+        <Dialog>
+            <DialogTrigger>
+                <p className="underline text-blue-500">
+                    {row.original.user.first_name}{" "}
+                    {row.original.user.middle_name}{" "}
+                    {row.original.user.last_name}
+                </p>
+            </DialogTrigger>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>
+                        Customer {row.original.user.first_name}{" "}
+                        {row.original.user.middle_name}{" "}
+                        {row.original.user.last_name}
+                    </DialogTitle>
+                </DialogHeader>
+                <div>
+                    <p>
+                        <strong>Email:</strong> {row.original.user.email}
+                    </p>
+                    <p>
+                        <strong>Phone:</strong>{" "}
+                        {row.original.user.contact_number}
+                    </p>
+                    <p>
+                        <strong>Address:</strong> {row.original.user.address}
+                    </p>
+                    <StaticMap
+                        from={{
+                            lat: Number(currentUser.lat),
+                            lng: Number(currentUser.lng),
+                        }}
+                        to={{
+                            lat: Number(row.original.user.lat),
+                            lng: Number(row.original.user.lng),
+                        }}
+                    />
+                </div>
+            </DialogContent>
+        </Dialog>
+    );
+};
+
 export const columns: ColumnDef<Booking>[] = [
     {
         accessorKey: "id",
@@ -177,11 +231,7 @@ export const columns: ColumnDef<Booking>[] = [
     {
         accessorKey: "user",
         header: "Booked By",
-        cell: ({ row }) => {
-            return `${row.original.user.first_name} ${
-                row.original.user.middle_name ?? ""
-            } ${row.original.user.last_name}`;
-        },
+        cell: UserCell,
     },
     {
         accessorKey: "status",

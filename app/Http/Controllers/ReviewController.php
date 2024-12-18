@@ -68,7 +68,9 @@ class ReviewController extends Controller
      */
     public function edit(ServiceRating $serviceRating)
     {
-        //
+        return Inertia::render('Service/Review/Edit', [
+            'review' => $serviceRating->load('service'),
+        ]);
     }
 
     /**
@@ -76,7 +78,14 @@ class ReviewController extends Controller
      */
     public function update(Request $request, ServiceRating $serviceRating)
     {
-        //
+        $validated = $request->validate([
+            'rating' => 'required|numeric|min:1|max:5',
+            'review' => 'required|string',
+        ]);
+
+        $serviceRating->update($validated);
+
+        return Redirect::route('customer.bookings.index');
     }
 
     /**

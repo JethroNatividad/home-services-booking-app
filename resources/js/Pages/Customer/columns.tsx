@@ -82,12 +82,24 @@ const ActionsCell = ({ row }: { row: Row<Booking> }) => {
                         </>
                     )}
 
-                    {row.original.status === "completed" && (
+                    {row.original.status === "completed" &&
+                    !row.original.rating ? (
                         <DropdownMenuItem>
                             <Link
                                 href={route("reviews.create", row.original.id)}
                             >
                                 Rate
+                            </Link>
+                        </DropdownMenuItem>
+                    ) : (
+                        <DropdownMenuItem>
+                            <Link
+                                href={route(
+                                    "reviews.edit",
+                                    row.original.rating?.id
+                                )}
+                            >
+                                Edit Rating
                             </Link>
                         </DropdownMenuItem>
                     )}

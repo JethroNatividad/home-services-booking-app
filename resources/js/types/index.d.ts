@@ -29,6 +29,7 @@ export interface Booking {
         | "rescheduled";
     created_at: string;
     updated_at: string;
+    rating: ServiceRating | null;
 }
 export interface ServiceRating {
     id: number;

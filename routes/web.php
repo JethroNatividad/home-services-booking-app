@@ -54,6 +54,8 @@ Route::middleware(['auth', CheckUserCompleted::class])->group(function () {
 
     Route::get('/reviews/create/{booking}', [ReviewController::class, 'create'])->name('reviews.create');
     Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+    Route::get('/reviews/{serviceRating}/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
+    Route::put('/reviews/{serviceRating}', [ReviewController::class, 'update'])->name('reviews.update');
 
     Route::get('/service-provider-bookings', [BookingController::class, 'serviceProviderIndex'])->name('service_provider.bookings.index');
 

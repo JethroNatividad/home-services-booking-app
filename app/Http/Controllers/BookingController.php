@@ -15,7 +15,7 @@ class BookingController extends Controller
      */
     public function customerIndex(Request $request): Response
     {
-        $bookings = Booking::where('user_id', $request->user()->id)->with('service.user')->orderBy('updated_at', 'desc')->get();
+        $bookings = Booking::where('user_id', $request->user()->id)->with(['service.user', 'rating'])->orderBy('updated_at', 'desc')->get();
 
         return inertia('Customer/Bookings', [
             'bookings' => $bookings,

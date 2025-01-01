@@ -229,6 +229,20 @@ export const columns: ColumnDef<Booking>[] = [
         },
     },
     {
+        accessorKey: "service.price",
+        header: "Price",
+        cell: ({ row }) => {
+            return `₱${row.original.service.price}`;
+        },
+    },
+    {
+        accessorKey: "fare",
+        header: "Fare",
+        cell: ({ row }) => {
+            return `₱${row.original.fare}`;
+        },
+    },
+    {
         accessorKey: "user",
         header: "Booked By",
         cell: UserCell,

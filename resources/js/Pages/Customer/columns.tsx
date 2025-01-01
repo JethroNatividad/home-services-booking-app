@@ -91,26 +91,32 @@ const ActionsCell = ({ row }: { row: Row<Booking> }) => {
                     )}
 
                     {row.original.status === "completed" &&
-                    !row.original.rating ? (
-                        <DropdownMenuItem>
-                            <Link
-                                href={route("reviews.create", row.original.id)}
-                            >
-                                Rate
-                            </Link>
-                        </DropdownMenuItem>
-                    ) : (
-                        <DropdownMenuItem>
-                            <Link
-                                href={route(
-                                    "reviews.edit",
-                                    row.original.rating?.id
-                                )}
-                            >
-                                Edit Rating
-                            </Link>
-                        </DropdownMenuItem>
-                    )}
+                        !row.original.rating && (
+                            <DropdownMenuItem>
+                                <Link
+                                    href={route(
+                                        "reviews.create",
+                                        row.original.id
+                                    )}
+                                >
+                                    Rate
+                                </Link>
+                            </DropdownMenuItem>
+                        )}
+
+                    {row.original.status === "completed" &&
+                        row.original.rating && (
+                            <DropdownMenuItem>
+                                <Link
+                                    href={route(
+                                        "reviews.edit",
+                                        row.original.rating?.id
+                                    )}
+                                >
+                                    Edit Rating
+                                </Link>
+                            </DropdownMenuItem>
+                        )}
                 </DropdownMenuContent>
             </DropdownMenu>
             <RescheduleModal
@@ -248,6 +254,21 @@ export const columns: ColumnDef<Booking>[] = [
             );
         },
     },
+    {
+        accessorKey: "service.price",
+        header: "Price",
+        cell: ({ row }) => {
+            return `₱${row.original.service.price}`;
+        },
+    },
+    {
+        accessorKey: "fare",
+        header: "Fare",
+        cell: ({ row }) => {
+            return `₱${row.original.fare}`;
+        },
+    },
+
     {
         accessorKey: "service.user",
         header: "Service Provider",

@@ -111,8 +111,7 @@ const Show = ({ service }: Props) => {
                         <BookingModal
                             isOpen={isOpen}
                             onClose={() => setIsOpen(false)}
-                            service_id={service.id}
-                            serviceName={service.name}
+                            service={service}
                         />
                     </div>
                 </div>

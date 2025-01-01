@@ -24,9 +24,10 @@ interface StaticMapProps {
         lat: number;
         lng: number;
     };
+    setDistance?: (distance: number) => void;
 }
 
-const StaticMap = ({ from, to }: StaticMapProps) => {
+const StaticMap = ({ from, to, setDistance }: StaticMapProps) => {
     const [routeCoordinates, setRouteCoordinates] = useState<
         [number, number][]
     >([]);
@@ -44,6 +45,7 @@ const StaticMap = ({ from, to }: StaticMapProps) => {
                         (coord: number[]) =>
                             [coord[1], coord[0]] as [number, number]
                     );
+                    setDistance && setDistance(data.routes[0].distance / 1000);
                     setRouteCoordinates(coordinates);
                 }
             } catch (error) {

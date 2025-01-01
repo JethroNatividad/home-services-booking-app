@@ -88,7 +88,7 @@ const Show = ({ service }: Props) => {
                                 <Star
                                     key={i}
                                     className={`h-5 w-5 ${
-                                        i < Math.round(service.rating)
+                                        i < Math.floor(service.rating)
                                             ? "text-yellow-400 fill-yellow-400"
                                             : "text-gray-300"
                                     }`}

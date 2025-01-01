@@ -73,7 +73,7 @@ export default function ServiceCard({
                             <Star
                                 key={i}
                                 className={`h-4 w-4 ${
-                                    i < Math.round(rating)
+                                    i < Math.floor(rating)
                                         ? "text-yellow-400 fill-yellow-400"
                                         : "text-gray-300"
                                 }`}

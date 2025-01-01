@@ -39,7 +39,7 @@ class Service extends Model
 
     public function getRatingAttribute()
     {
-        return $this->ratings->avg('rating') ?: 0;
+        return number_format($this->ratings->avg('rating') ?: 0, 2);
     }
 
     public function getReviewCountAttribute()

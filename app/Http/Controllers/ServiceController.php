@@ -61,6 +61,8 @@ class ServiceController extends Controller
             'images' => 'required|array|min:1',
             'images.*' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'category_id' => 'required|exists:categories,id',
+            'fare_per_km' => 'required|numeric',
+            'initial_fare' => 'required|numeric',
         ]);
 
         $validated['user_id'] = Auth::id();
@@ -124,6 +126,8 @@ class ServiceController extends Controller
             'images' => 'nullable|array|min:1',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'category_id' => 'required|exists:categories,id',
+            'fare_per_km' => 'required|numeric',
+            'initial_fare' => 'required|numeric',
         ]);
 
         $imagePaths = $service->images;

@@ -9,7 +9,7 @@ class Service extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'name', 'description', 'price', 'images', 'category_id'];
+    protected $fillable = ['user_id', 'name', 'description', 'price', 'images', 'category_id', 'fare_per_km', 'initial_fare'];
 
     protected $casts = [
         'images' => 'array',

@@ -19,6 +19,8 @@ return new class extends Migration
             $table->decimal('price', 10, 2);
             $table->json('images')->nullable();
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
+            $table->decimal('initial_fare', 10, 2);
+            $table->decimal('fare_per_km', 10, 2);
             $table->timestamps();
         });
     }

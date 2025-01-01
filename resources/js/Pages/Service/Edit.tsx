@@ -26,6 +26,8 @@ const Edit = ({ categories, service }: Props) => {
         description: service.description,
         price: service.price.toString(),
         images: null as FileList | null,
+        initial_fare: service.initial_fare.toString(),
+        fare_per_km: service.fare_per_km.toString(),
     });
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -151,6 +153,54 @@ const Edit = ({ categories, service }: Props) => {
                             {errors.price && (
                                 <div className="text-red-500 text-sm">
                                     {errors.price}
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="w-full space-y-2">
+                            <label
+                                htmlFor="initial_fare"
+                                className="block text-sm"
+                            >
+                                Initial Fare
+                            </label>
+                            <Input
+                                id="initial_fare"
+                                type="number"
+                                value={data.initial_fare}
+                                onChange={(e) =>
+                                    setData("initial_fare", e.target.value)
+                                }
+                                placeholder="Price"
+                                className="w-full"
+                            />
+                            {errors.initial_fare && (
+                                <div className="text-red-500 text-sm">
+                                    {errors.initial_fare}
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="w-full space-y-2">
+                            <label
+                                htmlFor="fare_per_km"
+                                className="block text-sm"
+                            >
+                                Fare per km
+                            </label>
+                            <Input
+                                id="fare_per_km"
+                                type="number"
+                                value={data.fare_per_km}
+                                onChange={(e) =>
+                                    setData("fare_per_km", e.target.value)
+                                }
+                                placeholder="Price"
+                                className="w-full"
+                            />
+                            {errors.fare_per_km && (
+                                <div className="text-red-500 text-sm">
+                                    {errors.fare_per_km}
                                 </div>
                             )}
                         </div>

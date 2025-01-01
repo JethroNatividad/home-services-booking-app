@@ -62,6 +62,8 @@ export interface Service {
     review_count: number;
     images: string[];
     ratings: ServiceRating[];
+    fare_per_km: number;
+    initial_fare: number;
 }
 
 export type PageProps<

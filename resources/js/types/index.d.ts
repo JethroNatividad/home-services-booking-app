@@ -30,6 +30,8 @@ export interface Booking {
     created_at: string;
     updated_at: string;
     rating: ServiceRating | null;
+    distance: number;
+    fare: number;
 }
 export interface ServiceRating {
     id: number;

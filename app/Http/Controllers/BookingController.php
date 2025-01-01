@@ -85,6 +85,8 @@ class BookingController extends Controller
             'service_id' => 'required|exists:services,id',
             'date' => 'required|date',
             'time' => 'required|date_format:H:i',
+            'distance' => 'required|numeric',
+            'fare' => 'required|numeric',
         ]);
 
         // Parse the date and time using Carbon
@@ -95,6 +97,8 @@ class BookingController extends Controller
             'service_id' => $request->service_id,
             'user_id' => $request->user()->id,
             'datetime' => $datetime,
+            'distance' => $request->distance,
+            'fare' => $request->fare,
         ]);
     }
 

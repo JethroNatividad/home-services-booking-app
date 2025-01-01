@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreignId('service_id')->constrained('services')->onDelete('cascade');
             $table->timestampTz('datetime');
             $table->enum('status', ['pending', 'active', 'rejected', 'completed', 'canceled', 'rescheduled'])->default('pending');
+            $table->decimal('distance', 10, 2);
+            $table->decimal('fare', 10, 2);
             $table->timestamps();
         });
     }

@@ -1,4 +1,4 @@
-import { FormEventHandler, useState } from "react";
+import { FormEventHandler, useEffect, useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/accordion";
 import StaticMap from "@/components/static-map";
 import { Service } from "@/types";
+import { route } from "../../../../vendor/tightenco/ziggy/src/js";
 
 interface BookingModalProps {
     isOpen: boolean;
@@ -38,7 +39,19 @@ export function BookingModal({ isOpen, onClose, service }: BookingModalProps) {
         date: new Date(),
         time: "",
         service_id: service.id,
+        distance: 0.0,
+        fare: 0.0,
     });
+
+    useEffect(() => {
+        setData({
+            ...data,
+            distance: Number(distance),
+            fare:
+                Number(service.initial_fare) +
+                Number(service.fare_per_km) * Number(distance),
+        });
+    }, [distance]);
 
     const handleSubmit: FormEventHandler = (e) => {
         e.preventDefault();
@@ -61,6 +74,19 @@ export function BookingModal({ isOpen, onClose, service }: BookingModalProps) {
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
+            <div className="hidden">
+                <StaticMap
+                    from={{
+                        lat: Number(service.user.lat),
+                        lng: Number(service.user.lng),
+                    }}
+                    to={{
+                        lat: Number(user.lat),
+                        lng: Number(user.lng),
+                    }}
+                    setDistance={setDistance}
+                />
+            </div>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>Book Service</DialogTitle>
@@ -173,7 +199,6 @@ export function BookingModal({ isOpen, onClose, service }: BookingModalProps) {
                                                     lat: Number(user.lat),
                                                     lng: Number(user.lng),
                                                 }}
-                                                setDistance={setDistance}
                                             />
                                         </div>
                                     </AccordionContent>

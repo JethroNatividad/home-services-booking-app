@@ -30,7 +30,10 @@ Route::middleware(['auth', CheckUserCompleted::class])->group(function () {
         }
 
         if (Auth::user()->role === 'admin') {
-            return Inertia::render('Admin/Dashboard');
+            return Inertia::render('Admin/Dashboard', [
+                'services' => Service::with(['user', 'category'])->get(),
+                'categories' => Category::all()
+            ]);
         }
     })->name('dashboard');
 

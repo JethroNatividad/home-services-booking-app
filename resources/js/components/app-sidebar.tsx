@@ -1,6 +1,7 @@
 import {
     Box,
     Boxes,
+    Clipboard,
     Home,
     LayoutDashboard,
     Notebook,
@@ -49,6 +50,11 @@ const serviceProviderItems: MenuItem[] = [
         title: "Bookings",
         icon: Notebook,
         name: "service_provider.bookings.index",
+    },
+    {
+        title: "Reports",
+        icon: Clipboard,
+        name: "reports.index",
     },
 ];
 

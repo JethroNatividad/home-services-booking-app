@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Middleware\CheckUserCompleted;
+use App\Models\Booking;
 use App\Models\Category;
 use App\Models\Service;
 use GuzzleHttp\Psr7\Request;
@@ -61,6 +62,18 @@ Route::middleware(['auth', CheckUserCompleted::class])->group(function () {
     Route::put('/reviews/{serviceRating}', [ReviewController::class, 'update'])->name('reviews.update');
 
     Route::get('/service-provider-bookings', [BookingController::class, 'serviceProviderIndex'])->name('service_provider.bookings.index');
+
+    Route::get('/reports', function () {
+        if (Auth::user()->role !== 'service_provider') {
+            abort(403, 'Unauthorized action.');
+        }
+
+        return Inertia::render('ServiceProvider/Reports', [
+            'bookings' => Booking::whereHas('service', function ($query) {
+                $query->where('user_id', Auth::id());
+            })->with(['user', 'service.user'])->orderBy('updated_at', 'desc')->get(),
+        ]);
+    })->name('reports.index');
 
 
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');

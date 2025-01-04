@@ -20,7 +20,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
+import { cn, formatMoney } from "@/lib/utils";
 import { format } from "date-fns";
 import { useState } from "react";
 
@@ -72,10 +72,6 @@ const chartConfig = {
         label: "Canceled",
         color: "hsl(var(--chart-3))",
     },
-    completed_earnings: {
-        label: "Earnings",
-        color: "hsl(var(--chart-4))",
-    },
 } satisfies ChartConfig;
 
 const Reports = ({ bookings }: Props) => {
@@ -114,6 +110,9 @@ const Reports = ({ bookings }: Props) => {
                         existing.completed_bookings += 1;
                         existing.completed_earnings =
                             Number(existing.completed_earnings) + price;
+                        existing.completed_fare =
+                            Number(existing.completed_fare) +
+                            Number(booking.fare);
                     } else if (booking.status === "canceled") {
                         existing.canceled_bookings += 1;
                     }
@@ -127,6 +126,8 @@ const Reports = ({ bookings }: Props) => {
                             booking.status === "canceled" ? 1 : 0,
                         completed_earnings:
                             booking.status === "completed" ? price : 0,
+                        completed_fare:
+                            booking.status === "completed" ? booking.fare : 0,
                     });
                 }
 
@@ -138,6 +139,7 @@ const Reports = ({ bookings }: Props) => {
                 completed_bookings: number;
                 canceled_bookings: number;
                 completed_earnings: number;
+                completed_fare: number;
             }[]
         )
         .sort(
@@ -153,12 +155,15 @@ const Reports = ({ bookings }: Props) => {
             completed_earnings:
                 Number(acc.completed_earnings) +
                 Number(item.completed_earnings),
+            completed_fare:
+                Number(acc.completed_fare) + Number(item.completed_fare),
         }),
         {
             total_bookings: 0,
             completed_bookings: 0,
             canceled_bookings: 0,
             completed_earnings: 0,
+            completed_fare: 0,
         }
     );
     return (
@@ -300,24 +305,6 @@ const Reports = ({ bookings }: Props) => {
                                         stopOpacity={0.1}
                                     />
                                 </linearGradient>
-                                <linearGradient
-                                    id="fillCompletedEarnings"
-                                    x1="0"
-                                    y1="0"
-                                    x2="0"
-                                    y2="1"
-                                >
-                                    <stop
-                                        offset="5%"
-                                        stopColor="var(--color-completed_earnings)"
-                                        stopOpacity={0.8}
-                                    />
-                                    <stop
-                                        offset="95%"
-                                        stopColor="var(--color-completed_earnings)"
-                                        stopOpacity={0.1}
-                                    />
-                                </linearGradient>
                             </defs>
                             <CartesianGrid vertical={false} />
                             <XAxis
@@ -371,13 +358,6 @@ const Reports = ({ bookings }: Props) => {
                                 stroke="var(--color-cancelled_bookings)"
                                 stackId="a"
                             />
-                            <Area
-                                dataKey="completed_earnings"
-                                type="natural"
-                                fill="url(#fillCompletedEarnings)"
-                                stroke="var(--color-completed_earnings)"
-                                stackId="a"
-                            />
 
                             <ChartLegend
                                 accumulate="sum"
@@ -389,7 +369,7 @@ const Reports = ({ bookings }: Props) => {
 
                     <Card className="mt-4">
                         <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
-                            <div className="grid grid-cols-3 gap-4">
+                            <div className="grid grid-cols-5 gap-4">
                                 <div>
                                     <h2 className="text-lg font-semibold">
                                         Total Bookings
@@ -412,6 +392,23 @@ const Reports = ({ bookings }: Props) => {
                                     </h2>
                                     <p className="text-4xl font-semibold">
                                         {totals.canceled_bookings}
+                                    </p>
+                                </div>
+                                <div>
+                                    <h2 className="text-lg font-semibold">
+                                        Earnings
+                                    </h2>
+                                    <p className="text-4xl font-semibold">
+                                        ₱
+                                        {formatMoney(totals.completed_earnings)}
+                                    </p>
+                                </div>
+                                <div>
+                                    <h2 className="text-lg font-semibold">
+                                        Fare
+                                    </h2>
+                                    <p className="text-4xl font-semibold">
+                                        ₱{formatMoney(totals.completed_fare)}
                                     </p>
                                 </div>
                             </div>

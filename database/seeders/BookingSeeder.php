@@ -15,7 +15,7 @@ class BookingSeeder extends Seeder
         $statuses = ['pending', 'completed', 'canceled'];
 
         // Create bookings for last 30 days
-        for ($i = 0; $i < 30; $i++) {
+        for ($i = 0; $i < 365; $i++) {
             $date = Carbon::now()->subDays($i);
 
             // Create 3-7 bookings per day

@@ -9,8 +9,20 @@ import {
 } from "@/components/ui/chart";
 import Layout from "@/layouts/Layout";
 import { Booking } from "@/types";
-import React from "react";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import { DateRange } from "react-day-picker";
+import { addDays } from "date-fns";
+import { Calendar } from "@/components/ui/calendar";
+import { Button } from "@/components/ui/button";
+import { Calendar as CalendarIcon } from "lucide-react";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { useState } from "react";
 
 type Props = {
     bookings: Booking[];
@@ -35,9 +47,22 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 const Reports = ({ bookings }: Props) => {
+    const [date, setDate] = useState<DateRange | undefined>({
+        from: addDays(new Date(), -30),
+        to: new Date(),
+    });
     // Group by updated_at date.
     // Calculate total, completed, and canceled bookings for each date.
-    const data = bookings
+    const filteredData = bookings
+        .filter((booking) => {
+            const bookingDate = new Date(booking.updated_at);
+            return (
+                date?.from &&
+                date?.to &&
+                bookingDate >= date.from &&
+                bookingDate <= date.to
+            );
+        })
         .reduce((acc, booking) => {
             const date = new Date(booking.updated_at).toDateString();
             const existing = acc.find((item) => item.date === date);
@@ -68,11 +93,51 @@ const Reports = ({ bookings }: Props) => {
         <Layout>
             <Card>
                 <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
+                    <div className="mb-4">
+                        <Popover>
+                            <PopoverTrigger asChild>
+                                <Button
+                                    variant={"outline"}
+                                    className={cn(
+                                        "w-[300px] justify-start text-left font-normal",
+                                        !date && "text-muted-foreground"
+                                    )}
+                                >
+                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                    {date?.from ? (
+                                        date.to ? (
+                                            <>
+                                                {format(date.from, "LLL dd, y")}{" "}
+                                                - {format(date.to, "LLL dd, y")}
+                                            </>
+                                        ) : (
+                                            format(date.from, "LLL dd, y")
+                                        )
+                                    ) : (
+                                        <span>Pick a date range</span>
+                                    )}
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent
+                                className="w-auto p-0"
+                                align="start"
+                            >
+                                <Calendar
+                                    initialFocus
+                                    mode="range"
+                                    defaultMonth={date?.from}
+                                    selected={date}
+                                    onSelect={setDate}
+                                    numberOfMonths={2}
+                                />
+                            </PopoverContent>
+                        </Popover>
+                    </div>
                     <ChartContainer
                         config={chartConfig}
                         className="aspect-auto h-[250px] w-full"
                     >
-                        <AreaChart data={data}>
+                        <AreaChart data={filteredData}>
                             <defs>
                                 <linearGradient
                                     id="fillTotalBookings"

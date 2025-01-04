@@ -72,6 +72,10 @@ const chartConfig = {
         label: "Canceled",
         color: "hsl(var(--chart-3))",
     },
+    completed_earnings: {
+        label: "Earnings",
+        color: "hsl(var(--chart-4))",
+    },
 } satisfies ChartConfig;
 
 const Reports = ({ bookings }: Props) => {
@@ -97,29 +101,45 @@ const Reports = ({ bookings }: Props) => {
                 bookingDate <= date.to
             );
         })
-        .reduce((acc, booking) => {
-            const date = new Date(booking.updated_at).toDateString();
-            const existing = acc.find((item) => item.date === date);
+        .reduce(
+            (acc, booking) => {
+                const date = new Date(booking.updated_at).toDateString();
+                const existing = acc.find((item) => item.date === date);
+                // Convert price to number to ensure proper addition
+                const price = Number(booking.service.price) || 0;
 
-            if (existing) {
-                existing.total_bookings += 1;
-
-                if (booking.status === "completed") {
-                    existing.completed_bookings += 1;
-                } else if (booking.status === "canceled") {
-                    existing.canceled_bookings += 1;
+                if (existing) {
+                    existing.total_bookings += 1;
+                    if (booking.status === "completed") {
+                        existing.completed_bookings += 1;
+                        existing.completed_earnings =
+                            Number(existing.completed_earnings) + price;
+                    } else if (booking.status === "canceled") {
+                        existing.canceled_bookings += 1;
+                    }
+                } else {
+                    acc.push({
+                        date,
+                        total_bookings: 1,
+                        completed_bookings:
+                            booking.status === "completed" ? 1 : 0,
+                        canceled_bookings:
+                            booking.status === "canceled" ? 1 : 0,
+                        completed_earnings:
+                            booking.status === "completed" ? price : 0,
+                    });
                 }
-            } else {
-                acc.push({
-                    date,
-                    total_bookings: 1,
-                    completed_bookings: booking.status === "completed" ? 1 : 0,
-                    canceled_bookings: booking.status === "canceled" ? 1 : 0,
-                });
-            }
 
-            return acc;
-        }, [] as { date: string; total_bookings: number; completed_bookings: number; canceled_bookings: number }[])
+                return acc;
+            },
+            [] as {
+                date: string;
+                total_bookings: number;
+                completed_bookings: number;
+                canceled_bookings: number;
+                completed_earnings: number;
+            }[]
+        )
         .sort(
             (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
         );
@@ -130,17 +150,22 @@ const Reports = ({ bookings }: Props) => {
             completed_bookings:
                 acc.completed_bookings + item.completed_bookings,
             canceled_bookings: acc.canceled_bookings + item.canceled_bookings,
+            completed_earnings:
+                Number(acc.completed_earnings) +
+                Number(item.completed_earnings),
         }),
         {
             total_bookings: 0,
             completed_bookings: 0,
             canceled_bookings: 0,
+            completed_earnings: 0,
         }
     );
     return (
         <Layout>
             <Card>
                 <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
+                    <h1 className="text-2xl font-semibold mb-4">Reports</h1>
                     <div className="mb-4">
                         <Popover>
                             <PopoverTrigger asChild>
@@ -275,6 +300,24 @@ const Reports = ({ bookings }: Props) => {
                                         stopOpacity={0.1}
                                     />
                                 </linearGradient>
+                                <linearGradient
+                                    id="fillCompletedEarnings"
+                                    x1="0"
+                                    y1="0"
+                                    x2="0"
+                                    y2="1"
+                                >
+                                    <stop
+                                        offset="5%"
+                                        stopColor="var(--color-completed_earnings)"
+                                        stopOpacity={0.8}
+                                    />
+                                    <stop
+                                        offset="95%"
+                                        stopColor="var(--color-completed_earnings)"
+                                        stopOpacity={0.1}
+                                    />
+                                </linearGradient>
                             </defs>
                             <CartesianGrid vertical={false} />
                             <XAxis
@@ -326,6 +369,13 @@ const Reports = ({ bookings }: Props) => {
                                 type="natural"
                                 fill="url(#fillCanceledBookings)"
                                 stroke="var(--color-cancelled_bookings)"
+                                stackId="a"
+                            />
+                            <Area
+                                dataKey="completed_earnings"
+                                type="natural"
+                                fill="url(#fillCompletedEarnings)"
+                                stroke="var(--color-completed_earnings)"
                                 stackId="a"
                             />
 

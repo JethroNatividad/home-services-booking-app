@@ -61,7 +61,7 @@ const chartConfig = {
         label: "Visitors",
     },
     total_bookings: {
-        label: "Total Bookings",
+        label: "Bookings",
         color: "hsl(var(--chart-1))",
     },
     completed_bookings: {
@@ -123,6 +123,20 @@ const Reports = ({ bookings }: Props) => {
         .sort(
             (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
         );
+
+    const totals = filteredData.reduce(
+        (acc, item) => ({
+            total_bookings: acc.total_bookings + item.total_bookings,
+            completed_bookings:
+                acc.completed_bookings + item.completed_bookings,
+            canceled_bookings: acc.canceled_bookings + item.canceled_bookings,
+        }),
+        {
+            total_bookings: 0,
+            completed_bookings: 0,
+            canceled_bookings: 0,
+        }
+    );
     return (
         <Layout>
             <Card>
@@ -315,9 +329,44 @@ const Reports = ({ bookings }: Props) => {
                                 stackId="a"
                             />
 
-                            <ChartLegend content={<ChartLegendContent />} />
+                            <ChartLegend
+                                accumulate="sum"
+                                additive="sum"
+                                content={<ChartLegendContent />}
+                            />
                         </AreaChart>
                     </ChartContainer>
+
+                    <Card className="mt-4">
+                        <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
+                            <div className="grid grid-cols-3 gap-4">
+                                <div>
+                                    <h2 className="text-lg font-semibold">
+                                        Total Bookings
+                                    </h2>
+                                    <p className="text-4xl font-semibold">
+                                        {totals.total_bookings}
+                                    </p>
+                                </div>
+                                <div>
+                                    <h2 className="text-lg font-semibold">
+                                        Completed Bookings
+                                    </h2>
+                                    <p className="text-4xl font-semibold">
+                                        {totals.completed_bookings}
+                                    </p>
+                                </div>
+                                <div>
+                                    <h2 className="text-lg font-semibold">
+                                        Canceled Bookings
+                                    </h2>
+                                    <p className="text-4xl font-semibold">
+                                        {totals.canceled_bookings}
+                                    </p>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
                 </CardContent>
             </Card>
         </Layout>

@@ -24,6 +24,34 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { useState } from "react";
 
+type Period = "week" | "month" | "year" | "all";
+
+const getDateRangeForPeriod = (period: Period): DateRange => {
+    const now = new Date();
+    switch (period) {
+        case "week":
+            return {
+                from: addDays(now, -7),
+                to: now,
+            };
+        case "month":
+            return {
+                from: addDays(now, -30),
+                to: now,
+            };
+        case "year":
+            return {
+                from: addDays(now, -365),
+                to: now,
+            };
+        case "all":
+            return {
+                from: new Date(0), // Beginning of time
+                to: now,
+            };
+    }
+};
+
 type Props = {
     bookings: Booking[];
 };
@@ -51,6 +79,12 @@ const Reports = ({ bookings }: Props) => {
         from: addDays(new Date(), -30),
         to: new Date(),
     });
+    const [activePeriod, setActivePeriod] = useState<Period>("month");
+
+    const handlePeriodChange = (period: Period) => {
+        setActivePeriod(period);
+        setDate(getDateRangeForPeriod(period));
+    };
     // Group by updated_at date.
     // Calculate total, completed, and canceled bookings for each date.
     const filteredData = bookings
@@ -132,6 +166,40 @@ const Reports = ({ bookings }: Props) => {
                                 />
                             </PopoverContent>
                         </Popover>
+                    </div>
+                    <div className="flex items-center gap-2 mb-4">
+                        <Button
+                            variant={
+                                activePeriod === "week" ? "default" : "outline"
+                            }
+                            onClick={() => handlePeriodChange("week")}
+                        >
+                            Week
+                        </Button>
+                        <Button
+                            variant={
+                                activePeriod === "month" ? "default" : "outline"
+                            }
+                            onClick={() => handlePeriodChange("month")}
+                        >
+                            Month
+                        </Button>
+                        <Button
+                            variant={
+                                activePeriod === "year" ? "default" : "outline"
+                            }
+                            onClick={() => handlePeriodChange("year")}
+                        >
+                            Year
+                        </Button>
+                        <Button
+                            variant={
+                                activePeriod === "all" ? "default" : "outline"
+                            }
+                            onClick={() => handlePeriodChange("all")}
+                        >
+                            All Time
+                        </Button>
                     </div>
                     <ChartContainer
                         config={chartConfig}

@@ -34,8 +34,8 @@ class ServiceController extends Controller
      */
     public function create(): Response
     {
-        // Only service_provider can create services
-        if (Auth::user()->role !== 'service_provider') {
+        // Only service_provider or admin can create services
+        if (Auth::user()->role !== 'service_provider' && Auth::user()->role !== 'admin') {
             abort(403, 'Unauthorized action.');
         }
 
@@ -50,7 +50,7 @@ class ServiceController extends Controller
     public function store(Request $request)
     {
         // Only service_provider can store services
-        if (Auth::user()->role !== 'service_provider') {
+        if (Auth::user()->role !== 'service_provider' && Auth::user()->role !== 'admin') {
             abort(403, 'Unauthorized action.');
         }
 
@@ -99,7 +99,7 @@ class ServiceController extends Controller
     public function edit(Service $service)
     {
         // Only service_provider can edit their own services
-        if (Auth::user()->role !== 'admin' && $service->user_id !== Auth::id()) {
+        if (Auth::user()->role !== 'admin' && $service->user_id !== Auth::id() && Auth::user()->role !== 'admin') {
             abort(403, 'Unauthorized action.');
         }
 
@@ -115,7 +115,7 @@ class ServiceController extends Controller
     public function update(Request $request, Service $service)
     {
         // Only service_provider can update their own services
-        if (Auth::user()->role !== 'admin' && $service->user_id !== Auth::id()) {
+        if (Auth::user()->role !== 'admin' && $service->user_id !== Auth::id() && Auth::user()->role !== 'admin') {
             abort(403, 'Unauthorized action.');
         }
 
@@ -152,7 +152,7 @@ class ServiceController extends Controller
     public function destroy(Service $service)
     {
         // Only service_provider can delete their own services
-        if (Auth::user()->role !== 'admin' && $service->user_id !== Auth::id()) {
+        if (Auth::user()->role !== 'admin' && $service->user_id !== Auth::id() && Auth::user()->role !== 'admin') {
             abort(403, 'Unauthorized action.');
         }
 

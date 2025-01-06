@@ -11,7 +11,7 @@ import ServiceCard from "./service-card";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 
 type Props = {
     services: Service[];
@@ -19,6 +19,7 @@ type Props = {
 };
 
 const ManageServices = ({ services: initialServices, categories }: Props) => {
+    const currentUser = usePage().props.auth.user;
     const [services, setServices] = useState<Service[]>(initialServices);
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedCategory, setSelectedCategory] = useState<string>("all");
@@ -78,9 +79,13 @@ const ManageServices = ({ services: initialServices, categories }: Props) => {
                         </Select>
                     </div>
                 </div>
-                <Button className="w-fit" asChild>
-                    <Link href={route("services.create")}>Create Service</Link>
-                </Button>
+                {currentUser.role !== "admin" && (
+                    <Button className="w-fit" asChild>
+                        <Link href={route("services.create")}>
+                            Create Service
+                        </Link>
+                    </Button>
+                )}
             </div>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {services.length === 0 && (

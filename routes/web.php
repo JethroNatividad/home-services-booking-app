@@ -76,6 +76,16 @@ Route::middleware(['auth', CheckUserCompleted::class])->group(function () {
         ]);
     })->name('reports.index');
 
+    Route::get('/admin-reports', function () {
+        if (Auth::user()->role !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
+
+        return Inertia::render('Admin/Reports', [
+            'bookings' => Booking::with(['service.user', 'user', 'rating'])->orderBy('updated_at', 'desc')->get(),
+        ]);
+    })->name('admin.reports.index');
+
 
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');

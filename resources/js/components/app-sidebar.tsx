@@ -82,6 +82,11 @@ const adminItems: MenuItem[] = [
         icon: Notebook,
         name: "admin.bookings.index",
     },
+    {
+        title: "Reports",
+        icon: Clipboard,
+        name: "admin.reports.index",
+    },
 ];
 
 type AppSidebarProps = {

@@ -88,48 +88,56 @@ export default function ServiceCard({
                     </div>
                 </CardContent>
             </Link>
-            {currentUser.id === user.id && (
-                <CardFooter className="p-4 space-x-4">
-                    <Button asChild>
-                        <Link href={route("services.edit", { service: id })}>
-                            Edit
-                        </Link>
-                    </Button>
-
-                    <AlertDialog>
-                        <Button variant="destructive" asChild>
-                            <AlertDialogTrigger>Delete</AlertDialogTrigger>
+            {currentUser.id === user.id ||
+                (currentUser.role === "admin" && (
+                    <CardFooter className="p-4 space-x-4">
+                        <Button asChild>
+                            <Link
+                                href={route("services.edit", { service: id })}
+                            >
+                                Edit
+                            </Link>
                         </Button>
-                        <AlertDialogContent>
-                            <AlertDialogHeader>
-                                <AlertDialogTitle>
-                                    Are you absolutely sure?
-                                </AlertDialogTitle>
-                                <AlertDialogDescription>
-                                    This action cannot be undone. This will
-                                    permanently delete this service from the
-                                    database.
-                                </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <Button asChild variant="destructive">
-                                    <AlertDialogAction asChild>
-                                        <Link
-                                            href={route("services.destroy", {
-                                                service: id,
-                                            })}
-                                            method="delete"
-                                        >
-                                            Delete
-                                        </Link>
-                                    </AlertDialogAction>
-                                </Button>
-                            </AlertDialogFooter>
-                        </AlertDialogContent>
-                    </AlertDialog>
-                </CardFooter>
-            )}
+
+                        <AlertDialog>
+                            <Button variant="destructive" asChild>
+                                <AlertDialogTrigger>Delete</AlertDialogTrigger>
+                            </Button>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>
+                                        Are you absolutely sure?
+                                    </AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        This action cannot be undone. This will
+                                        permanently delete this service from the
+                                        database.
+                                    </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>
+                                        Cancel
+                                    </AlertDialogCancel>
+                                    <Button asChild variant="destructive">
+                                        <AlertDialogAction asChild>
+                                            <Link
+                                                href={route(
+                                                    "services.destroy",
+                                                    {
+                                                        service: id,
+                                                    }
+                                                )}
+                                                method="delete"
+                                            >
+                                                Delete
+                                            </Link>
+                                        </AlertDialogAction>
+                                    </Button>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
+                    </CardFooter>
+                ))}
         </Card>
     );
 }

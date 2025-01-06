@@ -62,6 +62,7 @@ Route::middleware(['auth', CheckUserCompleted::class])->group(function () {
     Route::put('/reviews/{serviceRating}', [ReviewController::class, 'update'])->name('reviews.update');
 
     Route::get('/service-provider-bookings', [BookingController::class, 'serviceProviderIndex'])->name('service_provider.bookings.index');
+    Route::get('/admin-bookings', [BookingController::class, 'adminIndex'])->name('admin.bookings.index');
 
     Route::get('/reports', function () {
         if (Auth::user()->role !== 'service_provider') {

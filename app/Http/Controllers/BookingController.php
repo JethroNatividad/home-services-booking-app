@@ -35,6 +35,15 @@ class BookingController extends Controller
         ]);
     }
 
+    public function adminIndex(): Response
+    {
+        $bookings = Booking::with(['service.user', 'user', 'rating'])->orderBy('updated_at', 'desc')->get();
+
+        return inertia('Admin/Bookings', [
+            'bookings' => $bookings,
+        ]);
+    }
+
     public function cancel(Booking $booking)
     {
         $booking->update(['status' => 'canceled']);

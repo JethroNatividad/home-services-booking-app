@@ -71,13 +71,30 @@ const customerItems: MenuItem[] = [
     },
 ];
 
+const adminItems: MenuItem[] = [
+    {
+        title: "Dashboard",
+        icon: LayoutDashboard,
+        name: "dashboard",
+    },
+    {
+        title: "Bookings",
+        icon: Notebook,
+        name: "admin.bookings.index",
+    },
+];
+
 type AppSidebarProps = {
     user: User;
 };
 
 export function AppSidebar({ user }: AppSidebarProps) {
     const items =
-        user.role === "service_provider" ? serviceProviderItems : customerItems;
+        user.role === "service_provider"
+            ? serviceProviderItems
+            : user.role === "customer"
+            ? customerItems
+            : adminItems;
     return (
         <Sidebar collapsible="icon">
             <SidebarHeader>

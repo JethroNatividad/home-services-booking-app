@@ -1,3 +1,4 @@
+import ManageCategories from "@/components/manage-categories";
 import ManageServices from "@/components/manage-services";
 import Layout from "@/layouts/Layout";
 import type { Category, Service } from "@/types";
@@ -10,6 +11,10 @@ type Props = {
 const Dashboard = ({ services, categories }: Props) => {
     return (
         <Layout>
+            <div>
+                <h1 className="text-xl">Manage Categories</h1>
+                <ManageCategories categories={categories} />
+            </div>
             <div>
                 <h1 className="text-xl">Manage Services</h1>
                 <ManageServices services={services} categories={categories} />

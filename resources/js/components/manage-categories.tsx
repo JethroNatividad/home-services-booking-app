@@ -77,14 +77,14 @@ const ManageCategories = ({ categories }: Props) => {
                                             >
                                                 <AlertDialogAction asChild>
                                                     <Link
-                                                        // href={route(
-                                                        //     "services.destroy",
-                                                        //     {
-                                                        //         service: id,
-                                                        //     }
-                                                        // )}
-                                                        href="#"
-                                                        // method="delete"
+                                                        href={route(
+                                                            "categories.destroy",
+                                                            {
+                                                                category:
+                                                                    category.id,
+                                                            }
+                                                        )}
+                                                        method="delete"
                                                     >
                                                         Delete
                                                     </Link>

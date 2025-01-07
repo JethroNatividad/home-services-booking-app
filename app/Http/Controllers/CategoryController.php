@@ -72,5 +72,11 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         //
+
+        if (Auth::user()->role !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $category->delete();
     }
 }

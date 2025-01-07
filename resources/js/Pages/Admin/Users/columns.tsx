@@ -37,7 +37,11 @@ const ActionsCell = ({ row }: { row: Row<User> }) => {
                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
                     <AlertDialogTrigger asChild>
-                        <DropdownMenuItem>Ban</DropdownMenuItem>
+                        {row.original.status === "active" ? (
+                            <DropdownMenuItem>Ban</DropdownMenuItem>
+                        ) : (
+                            <DropdownMenuItem>Unban</DropdownMenuItem>
+                        )}
                     </AlertDialogTrigger>
                 </DropdownMenuContent>
             </DropdownMenu>
@@ -46,7 +50,9 @@ const ActionsCell = ({ row }: { row: Row<User> }) => {
                 <AlertDialogHeader>
                     <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                     <AlertDialogDescription>
-                        Are you sure you want to ban this user?
+                        Are you sure you want to{" "}
+                        {row.original.status === "active" ? "ban" : "unban"}{" "}
+                        this user?
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
@@ -54,9 +60,13 @@ const ActionsCell = ({ row }: { row: Row<User> }) => {
                     <Button onClick={() => false} variant="destructive" asChild>
                         <AlertDialogAction asChild>
                             <Link
-                                // method="post"
-                                // href={route("bookings.cancel", row.original.id)}
-                                href="#"
+                                method="post"
+                                href={route(
+                                    row.original.status === "active"
+                                        ? "ban"
+                                        : "unban",
+                                    { user: row.original.id }
+                                )}
                             >
                                 Yes
                             </Link>
@@ -88,6 +98,10 @@ export const columns: ColumnDef<User>[] = [
     {
         accessorKey: "role",
         header: "Role",
+    },
+    {
+        accessorKey: "status",
+        header: "Status",
     },
     {
         id: "actions",

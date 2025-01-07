@@ -80,6 +80,22 @@ Route::middleware(['auth', CheckUserCompleted::class])->group(function () {
         ]);
     })->name('manage-users');
 
+    Route::post('/manage-users/{user}/ban', function (User $user) {
+        if (Auth::user()->role !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $user->update(['status' => "banned"]);
+    })->name('ban');
+
+    Route::post('/manage-users/{user}/unban', function (User $user) {
+        if (Auth::user()->role !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $user->update(['status' => "active"]);
+    })->name('unban');
+
     Route::get('/reports', function () {
         if (Auth::user()->role !== 'service_provider') {
             abort(403, 'Unauthorized action.');

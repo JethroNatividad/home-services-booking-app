@@ -1,5 +1,5 @@
 import { Category } from "@/types";
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "./ui/button";
 import {
     AlertDialog,
@@ -13,15 +13,21 @@ import {
     AlertDialogTrigger,
 } from "./ui/alert-dialog";
 import { Link } from "@inertiajs/react";
+import CreateCategoryModal from "./create-category-modal";
 
 type Props = {
     categories: Category[];
 };
 
 const ManageCategories = ({ categories }: Props) => {
+    const [createOpen, setCreateOpen] = useState(false);
     return (
         <div className="my-4 space-y-4">
-            <Button>Create Category</Button>
+            <Button onClick={() => setCreateOpen(true)}>Create Category</Button>
+            <CreateCategoryModal
+                isOpen={createOpen}
+                onClose={() => setCreateOpen(false)}
+            />
             <div>
                 <ul className="flex">
                     {categories.map((category) => (

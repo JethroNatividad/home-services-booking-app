@@ -28,7 +28,8 @@ class User extends Authenticatable
         'contact_number',
         'address',
         'lat',
-        'lng'
+        'lng',
+        'status'
     ];
 
     /**

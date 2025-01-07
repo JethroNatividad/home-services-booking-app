@@ -13,6 +13,7 @@ export interface User {
     address: string;
     lat: string;
     lng: string;
+    status: "active" | "banned";
 }
 
 export interface Booking {

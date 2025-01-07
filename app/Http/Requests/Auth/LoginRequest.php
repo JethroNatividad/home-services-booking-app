@@ -50,6 +50,16 @@ class LoginRequest extends FormRequest
         }
 
         RateLimiter::clear($this->throttleKey());
+
+        // Check if user->status === 'banned' and throw an exception
+
+        if (Auth::user()->status === 'banned') {
+            Auth::logout();
+
+            throw ValidationException::withMessages([
+                'email' => "Your account has been banned.",
+            ]);
+        };
     }
 
     /**
@@ -80,6 +90,6 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->string('email')).'|'.$this->ip());
+        return Str::transliterate(Str::lower($this->string('email')) . '|' . $this->ip());
     }
 }

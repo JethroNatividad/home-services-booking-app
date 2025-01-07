@@ -1,28 +1,17 @@
-import { FormEventHandler, useEffect, useState } from "react";
-import { Calendar } from "@/components/ui/calendar";
+import { FormEventHandler } from "react";
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogFooter,
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useForm, usePage } from "@inertiajs/react";
+import { useForm } from "@inertiajs/react";
 import { toast } from "sonner";
-import { format } from "date-fns";
 
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from "@/components/ui/accordion";
-import StaticMap from "@/components/static-map";
-import { Service } from "@/types";
 import { Textarea } from "./ui/textarea";
 
 type Props = {
@@ -38,13 +27,13 @@ const CreateCategoryModal = ({ isOpen, onClose }: Props) => {
 
     const handleSubmit: FormEventHandler = (e) => {
         e.preventDefault();
-        // post(route("categories.store"), {
-        //     onFinish: () => {
-        //         toast("Category Created");
-        //         reset();
-        //         onClose();
-        //     },
-        // });
+        post(route("categories.store"), {
+            onFinish: () => {
+                toast("Category Created");
+                reset();
+                onClose();
+            },
+        });
     };
 
     return (

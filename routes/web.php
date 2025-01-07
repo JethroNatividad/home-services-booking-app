@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ServiceController;
@@ -63,6 +64,8 @@ Route::middleware(['auth', CheckUserCompleted::class])->group(function () {
 
     Route::get('/service-provider-bookings', [BookingController::class, 'serviceProviderIndex'])->name('service_provider.bookings.index');
     Route::get('/admin-bookings', [BookingController::class, 'adminIndex'])->name('admin.bookings.index');
+
+    Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
 
     Route::get('/reports', function () {
         if (Auth::user()->role !== 'service_provider') {

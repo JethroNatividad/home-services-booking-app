@@ -66,6 +66,7 @@ Route::middleware(['auth', CheckUserCompleted::class])->group(function () {
     Route::get('/admin-bookings', [BookingController::class, 'adminIndex'])->name('admin.bookings.index');
 
     Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+    Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
 
     Route::get('/reports', function () {
         if (Auth::user()->role !== 'service_provider') {

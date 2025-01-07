@@ -14,6 +14,7 @@ import {
 } from "./ui/alert-dialog";
 import { Link } from "@inertiajs/react";
 import CreateCategoryModal from "./create-category-modal";
+import EditCategoryModal from "./edit-category-modal";
 
 type Props = {
     categories: Category[];
@@ -21,6 +22,7 @@ type Props = {
 
 const ManageCategories = ({ categories }: Props) => {
     const [createOpen, setCreateOpen] = useState(false);
+    const [editOpen, setEditOpen] = useState(false);
     return (
         <div className="my-4 space-y-4">
             <Button onClick={() => setCreateOpen(true)}>Create Category</Button>
@@ -29,7 +31,7 @@ const ManageCategories = ({ categories }: Props) => {
                 onClose={() => setCreateOpen(false)}
             />
             <div>
-                <ul className="flex">
+                <ul className="flex space-x-4">
                     {categories.map((category) => (
                         <li
                             className="border rounded-md px-3 py-4 space-y-2"
@@ -40,7 +42,14 @@ const ManageCategories = ({ categories }: Props) => {
                                 <p>{category.description}</p>
                             </div>
                             <div className="space-x-2">
-                                <Button>Edit</Button>
+                                <Button onClick={() => setEditOpen(true)}>
+                                    Edit
+                                </Button>
+                                <EditCategoryModal
+                                    isOpen={editOpen}
+                                    onClose={() => setEditOpen(false)}
+                                    category={category}
+                                />
                                 <AlertDialog>
                                     <Button variant="destructive" asChild>
                                         <AlertDialogTrigger>

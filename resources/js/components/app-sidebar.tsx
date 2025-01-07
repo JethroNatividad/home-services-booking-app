@@ -87,6 +87,11 @@ const adminItems: MenuItem[] = [
         icon: Clipboard,
         name: "admin.reports.index",
     },
+    {
+        title: "Users",
+        icon: Users,
+        name: "manage-users",
+    },
 ];
 
 type AppSidebarProps = {

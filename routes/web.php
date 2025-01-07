@@ -9,6 +9,7 @@ use App\Http\Middleware\CheckUserCompleted;
 use App\Models\Booking;
 use App\Models\Category;
 use App\Models\Service;
+use App\Models\User;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -68,6 +69,16 @@ Route::middleware(['auth', CheckUserCompleted::class])->group(function () {
     Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
     Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+
+    Route::get('/manage-users', function () {
+        if (Auth::user()->role !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
+
+        return Inertia::render('Admin/Users/Users', [
+            'users' => User::where('id', '!=', Auth::id())->get()
+        ]);
+    })->name('manage-users');
 
     Route::get('/reports', function () {
         if (Auth::user()->role !== 'service_provider') {

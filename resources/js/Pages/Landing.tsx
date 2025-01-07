@@ -81,7 +81,7 @@ const Landing = () => {
                             </div>
                             <div className="space-x-3">
                                 <Button className="px-10 py-5 text-lg" asChild>
-                                    <Link href="/app/signup?role=SERVICE_PROVIDER">
+                                    <Link href="/register?role=service_provider">
                                         Sign Up as a Service Provider
                                     </Link>
                                 </Button>
@@ -90,7 +90,7 @@ const Landing = () => {
                                     className="px-10 py-5 text-lg"
                                     asChild
                                 >
-                                    <Link href="/app/signup?role=CUSTOMER">
+                                    <Link href="/register?role=customer">
                                         Find a Service
                                     </Link>
                                 </Button>
@@ -159,7 +159,7 @@ const Landing = () => {
                         </div>
                         <div className="mx-auto w-fit space-x-3">
                             <Button className="px-10 py-5 text-lg" asChild>
-                                <Link href="/app/signup?role=SERVICE_PROVIDER">
+                                <Link href="/register?role=service_provider">
                                     Become a Service Provider
                                 </Link>
                             </Button>
@@ -168,7 +168,7 @@ const Landing = () => {
                                 className="px-10 py-5 text-lg"
                                 asChild
                             >
-                                <Link href="/app/signup?role=CUSTOMER">
+                                <Link href="/register?role=customer">
                                     Find a Service
                                 </Link>
                             </Button>
